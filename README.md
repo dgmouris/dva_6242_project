@@ -8,6 +8,9 @@ I'll have links for stuff that we're using here.
 
 - [project description](https://docs.google.com/document/d/e/2PACX-1vThwMfiQ7of-0OjhZsqV3kR78CA8Ep12VknPNQjDjQiug6X3mVEIUHGtg5nTtcUWIwYZFby5ZWatKCm/pub)
 
+- [Shared Google Drive](https://drive.google.com/drive/folders/1OrXGF1PI-5eWbbj2sR2GRrIatR_86SJk?usp=sharing)
+  - Thought this might be easier for reports.
+
 - [Discord group](https://discord.com/channels/@me/1325943794285416600)
   - note please let me know if this doesn't work for you.
   - Let's have most discussions here for now.
