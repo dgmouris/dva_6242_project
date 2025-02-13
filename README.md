@@ -41,6 +41,173 @@ To be discussed with the team.
 
 ## Meeting Minutes
 
+### February 12th.
+- Agenda
+  - Expectations/Communication.
+    - Is this working so far and would you like a kanban board to clearly track tasks.
+      - We'll need it later,
+    - Maybe think about a good "working time/day" so that we can make a lot of progress quick.
+      - an issue of when you think you'll be working on things.
+      - Agree on times
+        - dylan
+        - tosh later
+        - everyone's good.
+  - Narrow down scope of our idea and what we'd like to do.
+    - We should have our idea finalized today or in the next few days TBD.
+    - I'd like to discuss the "layers" of our project (MVP -> What would be awesome but cut if necessary)
+    - Prediction would be be really useful from another player team into another this line
+      - This is a better route
+    - How we do we determine how good a line is?
+      - above replacement value?
+      - difficult how players mesh together/line chemistry
+      - classify players by characteristiscs and might be a little more complicated.
+    - Diffcult piece is how we measure success
+      - net value of a line
+      - visualization of a line (I might ask on ed about this.)
+    - Make a predicted line based on xG corsi/fenwick of three players normalized per minute. multiple by the toi ice of a baseline line.
+      - Normalized value to a per60mins could be the net score.
+      - Success metric could be how is the model working.
+      - Nice to have not need have but back testing on performance of lines as th.
+    - What we all agree
+      - predicted vs baseline (a real line)
+      - create a net score the the real line
+      - create a predicted net score of a "predicted line"
+      - visualize some of the values like (for both sides)
+        - xG
+        - corsi
+        - shot
+      - implemented the shot data (predicted heat map.)
+        - use our score to modify the shot data some way.
+      - implement the ra
+      - Stretch goals do the defensemen.
+        - as well
+      - If we can get the shift data we can get the teams we can calculate the defensive side of the puck
+        - Let's take a look at if we can get the shift data.
+      - If we can also get that data we could compare it other teams in their division.
+        - get more wins at the end of the day
+        - opportunities on their weakeness on their defensive side.
+      - Creating five man units way donw (only if we can get shift data.)
+      - Categorization of players evaluate this when doing a radial heat map of the data.
+  - Follow up from last time
+  - Begin talking about the Proposal.
+    - Proposal Document (Let's get content in and then narrow down from there)
+    - Literature survey (needs to be done quick)
+    - Proposal Slide deck (let's do this once we finish the proposal document or have a better idea? TBD)
+  - Next steps on building.
+    - Helmeier Questions (in google docs whip up a draft?)
+    - Literature Survey (in google docs whip up a summary?)
+  - Schedule
+    - now until 19th (all in google drive here.)
+      - Literature Survey
+      - proposal doucment done beginning with this meeting
+    - 19th to 26th
+      - slides
+      - gantt chart
+        - for the entire project.
+      - and recording
+    - 26th
+      - retrospecitve and thoughts about if we're good to submit
+      - submit the 27th.
+
+- Follow ups from last time
+  - Everyone put in some papers, thank you.
+    - We'll have to summarize each in a few sentences
+
+- Begin talking about the proposal document (2 pages.) https://docs.google.com/document/d/e/2PACX-1vThwMfiQ7of-0OjhZsqV3kR78CA8Ep12VknPNQjDjQiug6X3mVEIUHGtg5nTtcUWIwYZFby5ZWatKCm/pub#h.z11rqsgxo2dh
+  - Google drive thing
+  - What we plan on doing
+    - Seems like a website that's interactive
+      - Note: will need to discuss a stack that we're all onboard with.
+    - above.
+  - why you want to do it
+    - give nhl teams a way to evaluate players on a line
+    - fantasy users see how a player traded might get affected.
+    - fans look and try to understand trends (kind of like statcast/baseball savant in baseball, look this up dan)
+      - fun to look at as well.
+    - get a good mark
+  - how you will do it
+    - web app
+    - Discuss languages and stacks?
+      - python (a backend )
+        - framework later on.
+      - sql
+      - html css js
+        - tableau maybe?
+        - brain storm
+  - how your approach is better than the state of the art
+    - ability to compare a predicted line to a real line
+      - I don't see that anywhere?
+    - no real pools of player comparisons.
+    - make our own combination of a line rather what is provided and what is been out in the real world.
+  - why it may succeed
+    - see above
+    - and when it does what differences will it make
+  - how you will measure success
+    - in terms of values of a line called about net score?
+      - run a model that compares two existing lines
+      - compare what the model would have ran and what the result is of a new combination.
+        - predictive vs baseline.
+  - how long it's gonna take
+    - Gantt chart
+      - look above (in time.)
+  - Helmeier Questions
+    - What are you trying to do? Articulate your objectives using absolutely no jargon.
+      - yes.
+    - How is it done today; what are the limits of current practice?
+      - essentially you just get to view the raw data ofa line where now you get to compare real lines and a "predicted line"
+    - What's new in your approach? Why will it be successful?
+        - creating the predicted line
+    - Who cares?
+      - me, teams, fans
+    - If you're successful, what difference and impact will it make, and how do you measure them (e.g., via user studies, experiments, ground truth data, etc.)?
+      - this is one that we can discuss the report done.
+      - when a player gets traded how we can see his old line and his new line perform and what we can expect from that.
+    - What are the risks and payoffs?
+      - fans get a cool tool.
+      - risks of a project is that we have a lot of goals that may or may not be reached. We'll have to move pretty swiftly at the beginning steps because we might get stuck.
+        - Making sure that we essentially execute the layers in orders.
+    - How much will it cost?
+      - aws bill.
+      - sports radar/api bills
+      - data source that we may need to use
+    - How long will it take?
+      - semester
+      - improvements after the term?
+        - see risks and payoffs for timelines of what is feasible in the time frame.
+    - What are the midterm and final "exams" to check for success? How will progress be measured?
+      - once create our proposal and measuring each one of those levels/layers/tranches by.
+    - General timeline
+      - aggregating data
+      - making some type of model
+      - visualizing some of those pieces.
+
+- Literature Survey
+  - everyone should read their papers and give a summary.
+    - we decided as a team what to include and what not to include.
+    - Maybe we need to ask about this quite a bit.
+    - In your summary relate what heilmeier question that it could possibly be used for.
+  - We can update this.
+
+- Proposal Slide Deck (later)
+  - Should be clearer once
+
+- Proposal Video (later)
+  - If someone is good at the then we can give it to them.
+  - Otherwise I can record and download when we're in a meeting together or something like that.
+
+- Gantt Chart of Activities. (later)
+  - If someone is good with this then it's awesome.
+
+- Grading
+    - [45%] You must answer the Heilmeier questions. 5% for each question. If a question doesn’t apply, say so.
+    - [15%] Brief literature survey mentioning no fewer than 5 relevant papers (selected from all the papers your team have reviewed). Can be combined with Heilmeier question(s).
+    - [10%] Expected innovations. Can be combined with Heilmeier question(s).
+    The project should be novel and exciting in the solutions for both areas of (1) algorithm/computation and (2) visualization.
+    - [10%] Plan of activities (same requirements as described in “Proposal” section above)
+    - [20%] Presentation delivery
+    - [-5%] Illegible text, tiny figures, bad color contrast, etc.
+    - [-5%] Overrun. In addition, you may lose additional points for required content that is not covered within the time limit.
+
 ### February 5th.
 
 #### Intros
@@ -141,4 +308,3 @@ To be discussed with the team.
   - Let's add this by Monday February 10th so that we can have a couple of days to read and review this.
 - Give some thought about the project idea as whole and add to the following issue https://github.com/dgmouris/dva_6242_project/issues/1
   - Let's iron this out on Wednesday next meeting.
-  -
