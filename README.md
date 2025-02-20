@@ -15,6 +15,9 @@ I'll have links for stuff that we're using here.
   - note please let me know if this doesn't work for you.
   - Let's have most discussions here for now.
 
+- [Github Project](https://github.com/users/dgmouris/projects/3/views/1?layout=board)
+  - Take a look here.
+
 ### Report Resources Sources Perhaps
 - Stats
   - [Shot,team,lines, data](https://www.moneypuck.com/data.htm)
