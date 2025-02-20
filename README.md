@@ -41,6 +41,131 @@ To be discussed with the team.
 
 ## Meeting Minutes
 
+
+### February 19th
+
+- Agenda
+  - Expectation/Communication
+    - nobody here is a psychic please communicate.
+    - please post when you're working https://github.com/dgmouris/dva_6242_project/issues/4
+      - I think this would help.
+      - whenever you're posting to the issues, also post to the discord just incase someone hasn't seen great.
+    - branching correct system there.
+      - everyone understands how to make a pr
+      - everyone reviews.
+    - Git tutorial
+      - Dans going to run it.
+      - Tyler Toshan Kaiyu
+      - Things to look up on git.
+        - Things to look up is branching
+        - and creating PR.
+
+  - Scope
+    - Tidy up scope from last time
+      - we have a lot of data and discussion on what metrics to show for the MVP
+      - Options to compare the player to the line and another comparable line.
+        - Shot Differential
+        - Created adj +/- based on shot quality.
+        - Rebounds angle?
+        - zone entries.
+          - take a look here https://www.allthreezones.com/ might be used ful but double check the source data if it's on money puck.
+      - Start with existing lines
+        - Switch out a player should be a potential option.
+      - Finding comparable lines
+        - Similarity metric between lines
+    - Not Shot distance
+    - Taken from diagram.
+        Two Separate Models
+
+        1. Comparable Lines and a Similarity Score
+        (unsupervised learning kind of way)
+        a. nearest neighbours.
+        b. select one of the comparable lines.
+        c. display line v line add asterisk.
+
+        How a line is composed?
+
+        2. Take inputs of a forward line
+        and takes a metric that would predict the
+        players stats with a perspective player and
+        what the predictive player would be.
+        a. directly inject the player at current stats at that line
+        b. create a more complex model to adjust for more at that line.
+
+        Note: We would need one metric for this. we would
+        need to be careful on the model in model in model.
+    - Idea (what we all agree on.)
+      - Comparable lines first based on a few metrics (list here)
+      - Second layer is to create the predicted line and compare them.
+    - Come up with a clear title (a couple have been talked about in the chat)
+    - Title
+      - discuss later on.
+
+  - Follow up on literature survey
+    - Toshan: tie it into the ideas.
+      - add a piece.
+    - Optional index:
+
+
+  - Proposal Document.
+    - Tie in your literature to this.
+
+    - Take a look at whats there already
+      - what needs to be changed
+      - what needs to be added
+      - How the hell are we going to add the literature survey.
+    - Some one take a look at doing latex (I really don't want to take that one on)
+    -
+  - Talk about slides and schedule for the next week on creating the video.
+    - video
+    - slides
+    - gantt chart
+  - Whatever else pops up.
+
+- Takeaways
+  - Everyone needs to read the proposal and add where your literature would add to the context.
+  - Message the discord when you're doing this.
+    - more of like I'm working on this section (it might change please review.)
+  - Project by Saturday
+  - Slides
+    - Start on Sunday
+  - The Recording should be
+  - Gantt Chartt
+    - Weeks (from Feb 19 to April 18)
+      - 1 Febrarya 19 (before we submit)
+        - Finalizing Proposa1
+      - 2
+        - Backend
+          - Create a database and import the data (begin the import)
+          - Decide which framework to use for
+        - Frontend
+          - Create a rough sketch of what the visualization would look like.
+          - Decide whether to use D3, with js and frameworks to use
+      - 3
+        - Backend
+          - Importing all of the data to the backend.
+          - Begin creating the api
+            - Searching players
+            - Searching lines
+            - Being able get all of the data for that given line in a json format that's digestable.
+        - Frontend
+          - Discuss the json api format that we'll use
+          - A standard so that we can work on the frontend without the backend.
+      - 4
+        - Backend
+          - Finalize REST API (dan explain this to everyone)
+        - Frontend
+          - Begin makeing the calls to the web application.
+      - 5
+        - Fix bugs
+      - 6
+        - Fix bugs
+      - 7
+        - Project Paper
+      - 8
+        - Presentation
+
+
 ### February 12th.
 - Agenda
   - Expectations/Communication.
