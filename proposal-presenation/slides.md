@@ -58,7 +58,6 @@ layout: intro
 ## Current approach focus on player, team, lines that are either forward or defensemen
 
 <br/>
-<br/>
 
 ## Limatations are that it doesn't focus on the entire player on ice unit as a whole.
 
@@ -75,9 +74,13 @@ layout: intro
 
 ## Visualizing the data for an entire POIU.
 <br/>
-<br/>
 
 ## Creating a similarity Metric for POIUs and finding comparables across the league
+
+<br/>
+
+## Injecting a player from a different team on a POIU and predicting how the line would perform (time permitting)
+
 <!-- Add to bottom of all slides -->
 <div class="absolute bottom-4 right-4 text-sm opacity-70">
   Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
