@@ -18,6 +18,16 @@ I'll have links for stuff that we're using here.
 - [Github Project](https://github.com/users/dgmouris/projects/3/views/1?layout=board)
   - Take a look here.
 
+### Proposal Presentation (uses sli.dev)
+
+#### installation
+
+1. go in to the `proposal-presentation` folder
+   1. take a look at [sli.dev docs](https://sli.dev/guide/)
+2. install all dependencies with npm `npm install`
+3. run the project `npm run dev`
+   1. it should open [the presentation at http://localhost:3030/](http://localhost:3030/)
+
 ### Report Resources Sources Perhaps
 - Stats
   - [Shot,team,lines, data](https://www.moneypuck.com/data.htm)
