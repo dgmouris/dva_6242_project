@@ -54,6 +54,99 @@ To be discussed with the team.
 
 ## Meeting Minutes
 
+### February 26th
+
+- Agenda
+  - Good job on the Proposal Document.
+    - Let's remove colors
+    - If everyone is good let's hand it in early.
+    - Notes about the project
+      - Run through it one last time.
+      - Risk of having too much.
+      - Risks
+        - Tough to see more of them
+        - Misusage of the tool.
+        - Maybe it's useless to analyze as a five man unit
+          - Maybe there's not enough head to head data (maybe?)
+    - Take one more look
+      - Edits in the discord.
+    - Toshan not available for the next couple of days.
+  - Slides
+    - it seems like everyone was good with it.
+    - I merged in slides to the repo https://github.com/dgmouris/dva_6242_project?tab=readme-ov-file#proposal-presentation-uses-slidev
+    - Let's talk and make adjustments if we need.
+    - This uses node and NPM (probably something you'll use at some point)
+      - You can bring this down and try it or we'll talk about it on tuesday.
+    - Notes
+      - Add some Literature Survey
+      - Fix the references.
+  - Presentation (I'd prefer to get this done today.)
+    - Let's plan what we're going to say as we only have 120 seconds.
+    - Follows the slides.
+    - Make an original recording and work from there.
+    - Notes
+      - If not complete make a plan (I can't meet on thursday so it would have to be friday if we're not done.)
+      - I don't think we need to be all speaking, as it might be tight for 120, I don't mind who does but let's just make sure were on the same page.
+
+    - Thoughts
+      - preset video?
+      - doesn't have to be everyone speaking.
+        - clipping
+        - Toshan Feels okay with this.
+        - does any one feel not comfortable speaking? no
+        - voice over only
+      - Quick turnaround for right now
+      - Decide what section each person is going to talk about.
+      - Time to prepare x2.5 we'll prepare this.
+        - write a script, time yourself know how long it's going to take.
+    - Times to record
+      - Friday or Saturday Afternoon
+      - Saturday 11Am MST and 1pm EST
+        - https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDBjZjRkZGItYWFmMS00NjAxLWFkZjAtNmE3NjRiOWFmNWI4%40thread.v2/0?context=%7b%22Tid%22%3a%225c98fb47-d3b9-4649-9d94-f88cbdd9729c%22%2c%22Oid%22%3a%227b3063ee-b564-4565-ae13-6b9c363952f8%22%7d
+        - pending that we can hand in during the grace period (hopefully get a confirmation.)
+    - Divvy up now as your read it.
+      - no preference
+      - based on slides (2 slides each)
+      - Structure of slides (lower bound works)
+        - Title (6 seconds)
+          - Dan going to do this.
+        - Overview (15 seconds)
+          - Dan going to do this.
+        - What are we trying to do (20-30 seconds)
+          - A quick sketch of what it looks like?
+            - Dan take a quick look at the landscape and how you could maybe make this a bit better.
+          - Dan going to do this.
+        - How is done today and limitations (30+ seconds)
+          - Tyler going to do this.
+        - What's new in our approach (20-30 seconds)
+          - Dylan going to do this.
+        - Who cares (10 seconds)
+          - Kaiyu going to do this.
+        - Risks and Payoffs (15-20 seconds)
+          - Kaiyu going to do this.
+        - Cost time checks for success (15-20 seconds)
+          - Dylan going to do this.
+        - Conclusions (83.4% in)? (10-15)
+          - What's new/What were trying do.
+            - Maybe a quick mockup here that you could do but refer to the above.
+          - Dylan going to do this.
+        - References (3 seconds seconds)
+          - Dylan going to do this.
+      - We're not bound to this but please message earlier rather than later on changing.
+      - We could change around the slides to fix ordering if we wanted to for smoothness.
+      - Communicate this early on the discord.
+      - Takeaways
+        - Do your job
+          - know your part
+          - say average time by friday after noon.
+
+  - Tuesday Github session
+    - talk about a time that works
+    - scope is make prs answer any quesitons
+      - merge in tylers original thoughts.
+    - (time permitting) talk about npm if you need.
+    - Expectation:
+      - you've taken a bit of a gander at PRs and github in general.
 
 ### February 19th
 
