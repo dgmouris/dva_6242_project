@@ -1,3 +1,5 @@
 PERSONAL_README.md
 *.excalidraw
 data/
+venv/
+ignore/
