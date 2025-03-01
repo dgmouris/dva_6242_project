@@ -93,7 +93,7 @@ layout: intro
 ## - Fans
 <br/>
 
-## - NHL Team Staff
+## - Journalists
 <br/>
 
 ## - Analytics Organizations
