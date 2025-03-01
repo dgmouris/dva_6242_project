@@ -120,12 +120,12 @@ To be discussed with the team.
           - Tyler going to do this.
         - What's new in our approach (20-30 seconds)
           - Dylan going to do this.
+        - Cost time checks for success (15-20 seconds)
+          - Dylan going to do this.
         - Who cares (10 seconds)
           - Kaiyu going to do this.
         - Risks and Payoffs (15-20 seconds)
           - Kaiyu going to do this.
-        - Cost time checks for success (15-20 seconds)
-          - Dylan going to do this.
         - Conclusions (83.4% in)? (10-15)
           - What's new/What were trying do.
             - Maybe a quick mockup here that you could do but refer to the above.

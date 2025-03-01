@@ -84,6 +84,32 @@ layout: intro
   Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
 </div>
 ---
+
+<h1>Cost,  Time and Checks for Success</h1>
+<div class="flex space-x-6 h100">
+  <div class="w-1/4">
+    Cost
+    <ul>
+        <li>Free until we run out of resources for AWS or a cloud provider</li>
+    </ul>
+    <br/>
+    Time and Check points
+    <ul>
+        <li>Mid checkpoint (1 month): model to find comparable POIU</li>
+        <li>Final checkpoint (2 month total): Fully searchable web app that visualizes and compares</li>
+    </ul>
+
+  </div>
+  <div class="w-3/4 bg-cover bg-center" style="background-image: url('/images/gantt-chart.png');">
+
+  </div>
+</div>
+<!-- Add to bottom of all slides -->
+<div class="absolute bottom-4 right-4 text-sm opacity-70">
+  Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
+</div>
+
+---
 layout: intro
 ---
 
@@ -129,33 +155,8 @@ layout: two-cols-header
 </div>
 ---
 
-<h1>Cost,  Time and Checks for Success</h1>
-<div class="flex space-x-6 h100">
-  <div class="w-1/4">
-    Cost
-    <ul>
-        <li>Free until we run of resources for AWS or a cloud provider</li>
-    </ul>
-    <br/>
-    Time and Check points
-    <ul>
-        <li>Mid checkpoint (1 month): model to find comparable POIU</li>
-        <li>Final checkpoint (2 month total): Fully searchable web app that visualizes and compares</li>
-    </ul>
-
-  </div>
-  <div class="w-3/4 bg-cover bg-center" style="background-image: url('/images/gantt-chart.png');">
-
-  </div>
-</div>
-<!-- Add to bottom of all slides -->
-<div class="absolute bottom-4 right-4 text-sm opacity-70">
-  Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
-</div>
-
----
-
 # References
+
 <ul class="text-sm">
     <li>[1] Barinberg, E. (2023). Evaluating how NHL player shot selection impacts even-strength goal output over the course of a full season (Master's thesis). Ramapo College of New Jersey.</li>
     <li>[2] Becker, Devan G., Douglas G. Woolford, and Charmaine B. Dean. "Algorithmically deconstructing shot locations as a method for shot quality in hockey." Journal of Quantitative Analysis in Sports 17.2 (2021): 107-115.</li>
