@@ -49,17 +49,15 @@ Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Step
   Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
 </div>
 ---
-layout: intro
----
+
 
 # How is it done currently and What are the limitations?
-<br/>
 
 ## Current approach focus on player, team, lines that are either forward or defensemen
-
-<br/>
-
-## Limatations are that it doesn't focus on the entire player on ice unit as a whole.
+- For focus on a player there's shot type [1], position and posture [2,3]
+## Limitations are that it doesn't focus on the entire player on ice unit as a whole
+- Team comparison corsi rating [4]
+- Analysis of players together using play by play models and markov chains [5]
 
 <!-- Add to bottom of all slides -->
 <div class="absolute bottom-4 right-4 text-sm opacity-70">
@@ -122,12 +120,10 @@ layout: two-cols-header
 ::right::
 # Risks
 
-- scope might be to large, might have to pair it down.
-- our comparison model might have some unknown biases/uncertainties since different teams have different strategies
+- scope might be to large, might have to pare it down.
+- our comparison model might have some unknown biases/uncertainties since different teams have different strategies[6]
 
 
-<!-- https://www.vectorstock.com/royalty-free-vector/ice-hockey-rink-isolated-vector-27143243 -->
-<!-- Add to bottom of all slides -->
 <div class="absolute bottom-4 right-4 text-sm opacity-70">
   Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
 </div>
@@ -156,3 +152,15 @@ layout: two-cols-header
 <div class="absolute bottom-4 right-4 text-sm opacity-70">
   Team 117: Daniel Mouris, Dylan Riggs, Kaiyu Chen, Toshan Doodnauth, & Tyler Stephenson
 </div>
+
+---
+
+# References
+<ul class="text-sm">
+    <li>[1] Barinberg, E. (2023). Evaluating how NHL player shot selection impacts even-strength goal output over the course of a full season (Master's thesis). Ramapo College of New Jersey.</li>
+    <li>[2] Becker, Devan G., Douglas G. Woolford, and Charmaine B. Dean. "Algorithmically deconstructing shot locations as a method for shot quality in hockey." Journal of Quantitative Analysis in Sports 17.2 (2021): 107-115.</li>
+    <li>[3] Hamzah, Adi Padli, et al. "Study of Body Attitude Criteria of Indoor Hockey Players Based on Body Height to Obtain Accurate Passing Techniques." International Journal of Multidisciplinary Research and Analysis 4.02 (2021): 137-141.</li>
+    <li>[4] Goldfarb, Daniel. "An application of topological data analysis to hockey analytics." arXiv preprint arXiv:1409.7635 (2014)</li>
+    <li>[5] Ljung, D., Carlsson, N., & Lambrix, P. (2019). Player pairs valuation in ice hockey. In Machine Learning and Data Mining for Sports Analytics: 5th International Workshop, MLSA 2018, Co-located with ECML/PKDD 2018, Dublin, Ireland, September 10, 2018, Proceedings 5 (pp. 82-92). Springer International Publishing</li>
+    <li>[6] Snow, Kevin. The Science of Hockey: The Math, Technology, and Data Behind the Sport. Simon and Schuster, 2023.</li>
+</ul>
