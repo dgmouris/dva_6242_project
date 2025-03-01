@@ -90,13 +90,13 @@ layout: intro
   <div class="w-1/4">
     Cost
     <ul>
-        <li>Free until we run out of resources for AWS or a cloud provider</li>
+        <li>AWS or a cloud provider after free credits</li>
     </ul>
     <br/>
     Time and Check points
     <ul>
         <li>Mid checkpoint (1 month): model to find comparable POIU</li>
-        <li>Final checkpoint (2 month total): Fully searchable web app that visualizes and compares</li>
+        <li>Final checkpoint (2 month total): Fully searchable web app that visualizes and compares POIUs</li>
     </ul>
 
   </div>
