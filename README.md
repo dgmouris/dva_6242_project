@@ -55,6 +55,8 @@ I'll have links for stuff that we're using here.
 Include the issue number in your branch (at the end)
 Please describe your change your pull request.
 
+You need to get your pull requests reviewed by another team member.
+
 ## Meeting Minutes
 
 ### February 26th
