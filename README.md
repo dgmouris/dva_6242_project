@@ -50,7 +50,10 @@ I'll have links for stuff that we're using here.
 
 ## Contribution Guidelines
 
-To be discussed with the team.
+### Pull requests
+
+Include the issue number in your branch (at the end)
+Please describe your change your pull request.
 
 ## Meeting Minutes
 
