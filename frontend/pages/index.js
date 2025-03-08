@@ -1,5 +1,6 @@
 
-import PlayerSearchInput from "@/components/PlayerSearchInput";
+import PlayerSearchInput from "@/components/player/PlayerSearchInput";
+import POIUnitCard from "@/components/poiu/POIUnitCard"
 
 export default function Home() {
   return (
@@ -9,6 +10,14 @@ export default function Home() {
       <PlayerSearchInput />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <POIUnitCard
+          title={`Connor Mcdavid's most common POIU`}
+          team={"Edmonton Oilers"}
+        />
+        <POIUnitCard
+          title={`Best POIU Comparable`}
+          team={"Toronto Maple Leafs"}
+        />
       </div>
 
     </div>
