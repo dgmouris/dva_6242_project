@@ -19,9 +19,7 @@ export default function PlayerProfile ({playerName, number, position, imageUrl})
           </div>
         </div>
         <Badge variant="outline">{position} #{number}</Badge>
-
       </div>
-
     </div>
   </>
 }
