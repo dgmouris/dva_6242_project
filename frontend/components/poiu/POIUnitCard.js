@@ -2,9 +2,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 import PlayerProfile from "../player/PlayerProfile"
+import POIUnitAnalysis from "./POIUnitAnalysis"
 
 
-export default function POIUnitCard({title, team}) {
+export default function POIUnitCard({title, team, id}) {
 
   const DUMMY_UNITS = [
     "Unit: 1",
@@ -64,5 +65,8 @@ export default function POIUnitCard({title, team}) {
         />
       </div>
     </CardHeader>
+    <CardContent>
+      <POIUnitAnalysis id={id}/>
+    </CardContent>
   </Card>
 }
