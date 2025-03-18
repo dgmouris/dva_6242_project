@@ -1,5 +1,4 @@
 import requests
-import pprint
 
 # season is the model passed in from the db.
 def import_season(db, Season):
@@ -11,7 +10,9 @@ def import_season(db, Season):
     allSeasons = []
     for year in data:
         print(year)
-        allSeasons.append(Season(name=year))
+        allSeasons.append(
+            Season(id=int(year), name=year)
+        )
         print("-------------------")
     db.session.add_all(allSeasons)
     db.session.commit()
