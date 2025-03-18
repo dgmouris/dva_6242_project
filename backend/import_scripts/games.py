@@ -51,8 +51,10 @@ def import_games_for_season(beginning_season_year, db, Game):
             db.session.add(game)
             db.session.commit()
         except Exception as error:
+            print("FIX ME!")
             print(error)
-            breakpoint()
+            print(game_id)
+
 
 
     print("Successful!")

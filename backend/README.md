@@ -19,4 +19,3 @@ pip install -r requirements.txt
 3. in this folder run `python create_database_tables.py`
 4. in the same folder run `python import_all_data.py`
 5. run test.py it should show some data.
-

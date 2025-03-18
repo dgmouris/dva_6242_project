@@ -9,6 +9,6 @@ with app.app_context():
     # print(seasons)
 
     # games examples filter by season
-    # games = Game.query.filter_by(season_id=20232024).all()
-    # print(games)
+    games = Game.query.filter_by(season_id=20232024).all()
+    print(games)
 
