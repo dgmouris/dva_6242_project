@@ -9,11 +9,10 @@ def import_season(db, Season):
 
     allSeasons = []
     for year in data:
-        print(year)
         allSeasons.append(
             Season(id=int(year), name=year)
         )
-        print("-------------------")
+
     db.session.add_all(allSeasons)
     db.session.commit()
 

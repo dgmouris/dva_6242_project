@@ -51,10 +51,10 @@ def import_all_shots(db, Shot, Game):
 
     all_shot_rows = import_shot_game_data(shots_file=shots_data_file)
 
-    print(F"Importing {len(all_shot_rows)}")
+    print(F"Importing {len(all_shot_rows)} shots.")
     for index, row in enumerate(all_shot_rows):
         if index % 10000 == 0:
-            print("imported {index} shots.")
+            print(F"imported {index} shots.")
         try:
             shot = Shot(**row)
             db.session.add(shot)
