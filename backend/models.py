@@ -6,6 +6,7 @@ from app import app, db
 # from extension_db import db
 
 from sqlalchemy.orm import DeclarativeBase # type: ignore
+from sqlalchemy.dialects.postgresql import JSONB # type: ignore
 
 # base class for the image.
 class Base(DeclarativeBase):
@@ -31,6 +32,15 @@ class Game(db.Model):
     # the relationship
     season = db.relationship('Season', backref='games')
 
+    # this is going to be somewhere to save the shift data, just make a json
+    # field to dump this into.
+    shift_data = db.Column(JSONB, nullable=True)
+
+    def get_nhl_game_id(self):
+        # get the first four chars of the season id (look in the database)
+        season = str(self.season_id)[0:4]
+        return f"{season}0{int(self.id)}"
+
     def __repr__(self):
         return f"<Game {self.id}>"
 
@@ -45,6 +55,22 @@ class Player(db.Model):
         return f"<Player {self.id}>"
 
 
+class POIU(db.Model):
+    id=db.Column(db.Float, primary_key=True)
+    # situation will need to be calculated from people on ice.
+    situation = db.Column(db.String(100), nullable=False)
+
+    # players will be saved in the order of their ids.
+    player_one_id = db.Column(db.Integer, nullable=True)
+    player_two_id = db.Column(db.Integer, nullable=True)
+    player_three_id = db.Column(db.Integer, nullable=True)
+    player_four_id = db.Column(db.Integer, nullable=True)
+    player_five_id = db.Column(db.Integer, nullable=True)
+    player_six_id = db.Column(db.Integer, nullable=True)
+
+    def __repr__(self):
+        return f"<POIU {self.id}>"
+
 class Shot(db.Model):
     # keys
     shotID = db.Column(db.Float, primary_key=True)
@@ -53,6 +79,10 @@ class Shot(db.Model):
     # relationships that can be made.
     season = db.Column(db.Float, nullable=True)
     shooterPlayerId = db.Column(db.Float, nullable=True)
+
+    # POIU relationships we can foreign key them later.
+    shooting_poiu_id = db.Column(db.Integer, nullable=True)
+    defending_poiu_id = db.Column(db.Integer, nullable=True)
 
     # data
     arenaAdjustedShotDistance = db.Column(db.Float, nullable=True)
