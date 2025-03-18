@@ -1,5 +1,4 @@
 import time
-import requests
 import csv
 from datetime import datetime
 
@@ -20,8 +19,6 @@ def import_games_for_season(beginning_season_year, db, Game):
 
     with open(shots_data_file, newline='') as csvfile:
         reader = csv.DictReader(csvfile)  # Uses the first line as column headers
-
-
         for row in reader:
             game_id = int(row["game_id"])
             beginning_year = int(row["season"])

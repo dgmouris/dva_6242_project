@@ -34,11 +34,26 @@ class Game(db.Model):
     def __repr__(self):
         return f"<Game {self.id}>"
 
+class Player(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(255), nullable=True)
+    last_name = db.Column(db.String(255), nullable=True)
+    full_name = db.Column(db.String(255), nullable=True)
+    position = db.Column(db.String(5), nullable=True)
+
+    def __repr__(self):
+        return f"<Player {self.id}>"
+
 
 class Shot(db.Model):
     # keys
     shotID = db.Column(db.Float, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
+
+    # relationships that can be made.
+    season = db.Column(db.Float, nullable=True)
+    shooterPlayerId = db.Column(db.Float, nullable=True)
+
     # data
     arenaAdjustedShotDistance = db.Column(db.Float, nullable=True)
     arenaAdjustedXCord = db.Column(db.Float, nullable=True)
@@ -101,10 +116,9 @@ class Shot(db.Model):
     playerNumThatDidEvent = db.Column(db.Float, nullable=True)
     playerNumThatDidLastEvent = db.Column(db.Float, nullable=True)
     playerPositionThatDidEvent = db.Column(db.String(100), nullable=False)
-    season = db.Column(db.Float, nullable=True)
     shooterLeftRight = db.Column(db.String(100), nullable=False)
     shooterName = db.Column(db.String(100), nullable=False)
-    shooterPlayerId = db.Column(db.Float, nullable=True)
+
     shooterTimeOnIce = db.Column(db.Float, nullable=True)
     shooterTimeOnIceSinceFaceoff = db.Column(db.Float, nullable=True)
     shootingTeamAverageTimeOnIce = db.Column(db.Float, nullable=True)
