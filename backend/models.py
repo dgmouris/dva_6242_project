@@ -12,8 +12,13 @@ from sqlalchemy.dialects.postgresql import JSONB # type: ignore
 class Base(DeclarativeBase):
     pass
 
+# converts the class to a dict for the api.
+class AsDictMixin():
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-class Season(db.Model):
+
+class Season(db.Model, AsDictMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Integer, nullable=False)
     is_used = db.Column(db.Boolean, default=False, nullable=False)
@@ -21,7 +26,7 @@ class Season(db.Model):
     def __repr__(self):
         return f"<Season {self.name}>"
 
-class Game(db.Model):
+class Game(db.Model, AsDictMixin):
     id = db.Column(db.Integer, primary_key=True)
     season_id = db.Column(db.Integer, db.ForeignKey('season.id'))
 
@@ -44,7 +49,7 @@ class Game(db.Model):
     def __repr__(self):
         return f"<Game {self.id}>"
 
-class Player(db.Model):
+class Player(db.Model, AsDictMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
@@ -55,7 +60,7 @@ class Player(db.Model):
         return f"<Player {self.id}>"
 
 
-class POIU(db.Model):
+class POIU(db.Model, AsDictMixin):
     id=db.Column(db.Float, primary_key=True)
     # situation will need to be calculated from people on ice.
     situation = db.Column(db.String(100), nullable=False)
@@ -71,7 +76,7 @@ class POIU(db.Model):
     def __repr__(self):
         return f"<POIU {self.id}>"
 
-class Shot(db.Model):
+class Shot(db.Model, AsDictMixin):
     # keys
     shotID = db.Column(db.Float, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
