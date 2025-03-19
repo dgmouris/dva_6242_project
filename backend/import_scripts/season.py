@@ -15,5 +15,4 @@ def import_season(db, Season):
 
     db.session.add_all(allSeasons)
     db.session.commit()
-
     print("Added all Seasons.")

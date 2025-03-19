@@ -27,14 +27,7 @@ def import_shifts_for_games(db, Game):
         # yes this takes long about 30 mins to complete
         time.sleep(1)
 
-    # breakpoint()
-    print("hi")
-
-
-
     print("Importing successful")
-
-
 
 def convert_minute_format_to_seconds(string_time_value):
     # fix this handle none values better.

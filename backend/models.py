@@ -221,6 +221,27 @@ class Shot(db.Model, AsDictMixin):
     def __repr__(self):
         return F"<Shot {self.id}>"
 
+# get or create model
+# this is common to do in databases
+# reference here https://stackoverflow.com/questions/2546207/does-sqlalchemy-have-an-equivalent-of-djangos-get-or-create
+def get_or_create(session, model, defaults=None, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).one_or_none()
+    if instance:
+        return instance, False
+    else:
+        kwargs |= defaults or {}
+        instance = model(**kwargs)
+        try:
+            session.add(instance)
+            session.commit()
+        except Exception:  # The actual exception depends on the specific database so we catch all exceptions. This is similar to the official documentation: https://docs.sqlalchemy.org/en/latest/orm/session_transaction.html
+            session.rollback()
+            instance = session.query(model).filter_by(**kwargs).one()
+            return instance, False
+        else:
+            return instance, True
+
+
 def create_all_database_tables():
     print("Creating Database Tables...")
     with app.app_context():
