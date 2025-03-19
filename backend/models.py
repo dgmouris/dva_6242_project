@@ -73,6 +73,9 @@ class POIU(db.Model, AsDictMixin):
     player_five_id = db.Column(db.Integer, nullable=True)
     player_six_id = db.Column(db.Integer, nullable=True)
 
+    # all players as a json column
+    all_players = db.Column(JSONB, nullable=True)
+
     def __repr__(self):
         return f"<POIU {self.id}>"
 
@@ -80,6 +83,9 @@ class Shot(db.Model, AsDictMixin):
     # keys
     shotID = db.Column(db.Float, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
+
+    # game relationships
+    game = db.relationship('Game', backref='shots')
 
     # relationships that can be made.
     season = db.Column(db.Float, nullable=True)
@@ -214,9 +220,6 @@ class Shot(db.Model, AsDictMixin):
 
     # note still needs to the POIU table references.
 
-
-    # relationships
-    game = db.relationship('Game', backref='shots')
 
     def __repr__(self):
         return F"<Shot {self.id}>"

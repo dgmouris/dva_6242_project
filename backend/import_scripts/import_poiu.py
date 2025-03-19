@@ -1,8 +1,21 @@
+import csv
+from pathlib import Path
+from datetime import datetime
 # important! you need to run the script to download all the shift data to the games
+from sqlalchemy.orm import joinedload # type: ignore
 
 def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
     print("Creating POIU to shot Mapping...")
-    all_shots = db.session.query(Shot).filter_by(shooting_poiu_id=None).all()
+    before_query = datetime.now().timestamp()
+    all_shots = db.session.query(
+        Shot
+    ).options(
+        joinedload(Shot.game)
+    ).filter_by(shooting_poiu_id=None).limit(10000).all()
+    after_query = datetime.now().timestamp()
+    print(F"query took {after_query-before_query}")
+
+    goalie_ids = import_all_goalie_ids()
 
     for shot in all_shots:
         # get the shot data as a dict
@@ -16,24 +29,33 @@ def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
         goalie_shot_on = int(shot.goalieIdForShot)
         player_only_ids_against = [player["playerId"]
             for player in players_against
-            if player["playerId"] != goalie_shot_on
+            if player["playerId"] != goalie_shot_on and player["playerId"] not in goalie_ids
         ]
-        # sort
+        # # sort
         player_only_ids_against.sort()
 
         # remove the goalies from the for team.
-        all_player_ids_for = [int(player["playerId"]) for player in players_for]
-        results = db.session.query(Player).filter(Player.id.in_(all_player_ids_for)).all()
-        player_only_ids_for = [result.id for result in results]
+        all_player_ids_for = [int(player["playerId"])
+            for player in players_for
+            if  player["playerId"] not in goalie_ids
+        ]
         # sort
+        all_player_ids_for.sort()
+        # results = db.session.query(Player).filter(Player.id.in_(all_player_ids_for)).all()
+        # player_only_ids_for = [result.id for result in results]
 
-        situation = get_situation(player_only_ids_for, player_only_ids_against)
+        # all_player_ids_for = players_for
+        # player_only_ids_against = players_against
+
+        # sort
+        situation = get_situation(all_player_ids_for, player_only_ids_against)
 
         # get the player ids as a column mapping as a dict
-        poiu_data_for = get_mapping_to_database_columns(situation, player_only_ids_for)
+        poiu_data_for = get_mapping_to_database_columns(situation, all_player_ids_for)
         poiu_data_against = get_mapping_to_database_columns(situation, player_only_ids_against)
 
         try:
+
             # get the player ids as a column mapping as a dict
             poiu_for, created = get_or_create(db.session, POIU, **poiu_data_for)
             poiu_against, created = get_or_create(db.session, POIU, **poiu_data_against)
@@ -43,9 +65,10 @@ def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
             shot.defending_poiu_id = poiu_against.id
 
             db.session.add(shot)
-            print(F"updated shot {shot.id} with POIU")
+            print(F"updated shot {shot.shotID} with POIU")
         except Exception as error:
-            print(F"error skipped {shot.id}")
+            print(F"error skipped {shot.shotID}")
+            print(error)
     db.session.commit()
     print("Updated all shots with POIUs!")
 
@@ -56,14 +79,18 @@ def get_mapping_to_database_columns(situation, player_ids_only):
         "player_three_id",
         "player_four_id",
         "player_five_id",
-        "player_six_id"
+        "player_six_id",
+
     ]
     results = {}
     for index, player_id in enumerate(player_ids_only):
+        if index > len(MAPPING_TO_POIU_TABLES):
+            continue
         table_col = MAPPING_TO_POIU_TABLES[index]
         results[table_col] = player_id
 
     results["situation"] = situation
+    results["all_players"] = player_ids_only
 
     return results
 
@@ -107,3 +134,19 @@ def assign_players_on_ice_to_shots(shot_data, shift_data):
     return shot_data
 
 
+
+def import_all_goalie_ids():
+
+    file_path = Path(__file__)
+    root = file_path.parent.parent.parent
+
+    shots_data_file = Path(root / "data" / "goalies" / F"goalies_2023.csv")
+
+    all_goalies_ids = []
+
+    last_player_id = 0
+    with open(shots_data_file, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)  # Uses the first line as column headers
+        for row in reader:
+            all_goalies_ids.append(int(row["playerId"]))
+    return all_goalies_ids
