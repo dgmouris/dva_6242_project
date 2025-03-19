@@ -18,12 +18,29 @@ def load_line_data():
         reader = csv.DictReader(csvfile)  # Uses the first line as column headers
 
         for row in reader:
+            # Extract player IDs based on position
+            position = row["position"]
+            line_id = row["lineId"]
+            if position == "line" and len(line_id) == 21:
+                player1ID = int(line_id[:7])
+                player2ID = int(line_id[7:14])
+                player3ID = int(line_id[14:])
+            elif position == "pairing" and len(line_id) == 14:
+                player1ID = int(line_id[:7])
+                player2ID = int(line_id[7:])
+                player3ID = None
+            else:
+                # Handle unexpected cases (optional)
+                player1ID = None
+                player2ID = None
+                player3ID = None
+
             line_data = {
                 "line_id": int(row["lineId"]),
                 "season": int(row["season"]),
                 "name": row["name"],
                 "team": row["team"],
-                "position": row["position"],
+                "position": position,
                 "situation": row["situation"],
                 "games_played": int(row["games_played"]),
                 "icetime": int(row["icetime"]),
@@ -60,6 +77,9 @@ def load_line_data():
                 "hits_for": int(row["hitsFor"]),
                 "takeaways_for": int(row["takeawaysFor"]),
                 "giveaways_for": int(row["giveawaysFor"]),
+                "player1ID": player1ID,
+                "player2ID": player2ID,
+                "player3ID": player3ID,
             }
 
 
