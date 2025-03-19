@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import datetime
 # important! you need to run the script to download all the shift data to the games
 from sqlalchemy.orm import joinedload # type: ignore
+from sqlalchemy import update # type: ignore
 
 def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
     print("Creating POIU to shot Mapping...")
@@ -17,7 +18,9 @@ def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
 
     goalie_ids = import_all_goalie_ids()
 
-    for shot in all_shots:
+    # this is an array that will bulk add every 1000 shots.
+    all_shots_to_add = []
+    for index, shot in enumerate(all_shots):
         # get the shot data as a dict
         shot_data = shot.as_dict()
         # get the shift data imported earlier.
@@ -64,12 +67,24 @@ def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
             shot.shooting_poiu_id = poiu_for.id
             shot.defending_poiu_id = poiu_against.id
 
-            db.session.add(shot)
+            # all_shots_to_add.append(shot)
+            shot_data = shot.as_dict()
+            all_shots_to_add.append(shot_data)
+
+            # if it's a thouasand
+            if index % 1000 == 0:
+                db.session.execute(
+                    update(Shot),
+                    all_shots_to_add,
+                )
+                # db.session.add_all(all_shots_to_add)
+                db.session.commit()
+                all_shots_to_add = []
             print(F"updated shot {shot.shotID} with POIU")
         except Exception as error:
             print(F"error skipped {shot.shotID}")
             print(error)
-    db.session.commit()
+
     print("Updated all shots with POIUs!")
 
 def get_mapping_to_database_columns(situation, player_ids_only):
@@ -84,7 +99,7 @@ def get_mapping_to_database_columns(situation, player_ids_only):
     ]
     results = {}
     for index, player_id in enumerate(player_ids_only):
-        if index > len(MAPPING_TO_POIU_TABLES):
+        if index >= len(MAPPING_TO_POIU_TABLES):
             continue
         table_col = MAPPING_TO_POIU_TABLES[index]
         results[table_col] = player_id
@@ -104,14 +119,27 @@ def get_situation(player_only_ids_for, player_only_ids_against):
 def get_players_on_ice_for_shot(shot, shift_data):
     players_for = []
     players_against = []
+
     period = shot["period"]
+
+    # shot time is time into a game
     shot_time = shot["time"]
+
+    # the shifts start from the period so we're going to add the offset time.
+    PERIOD_OFFSET_TO_ADD_IN_SECONDS = 1200 # this is 60secs*20mins
+
     for shift in shift_data:
+        # subtract 1 to the period and multiply by the seconds
+        former_period_time_to_add = (shift["period"] - 1) * PERIOD_OFFSET_TO_ADD_IN_SECONDS
         # get the shot time and period
-        # this goes to the next shift if they are not on the ice.
-        if not (shift["startTimeNumber"] < shot_time
-            and shift["endTimeNumber"] > shot_time
-            and shift["period"] == period):
+        shift_start_in_game = shift["startTimeNumber"] + former_period_time_to_add
+        shift_end_in_game = shift["endTimeNumber"] + former_period_time_to_add
+        # this goes to the next shift if they are not on the ice, debugging below.
+        # print(F"{shot_time} start {shift_start_in_game} end {shift_end_in_game}")
+        # start in game might be after a goal so that's why one is equal one is not.
+        if not (shift_start_in_game < shot_time
+            and shift_end_in_game >= shot_time
+            and shift["period"] == int(period)):
             continue
 
         if shot["teamCode"] == shift["teamAbbrev"]:
@@ -124,8 +152,7 @@ def get_players_on_ice_for_shot(shot, shift_data):
 def assign_players_on_ice_to_shots(shot_data, shift_data):
     print("assigning player shifts to shots...")
     for index, shot in enumerate(shot_data):
-        # shot_time = shot["time"]
-        # team_for = shot["teamCode"]
+
         players_for, players_against = get_players_on_ice_for_shot(shot, shift_data)
 
         shot_data[index]["playersOnIceFor"] = players_for
@@ -144,7 +171,6 @@ def import_all_goalie_ids():
 
     all_goalies_ids = []
 
-    last_player_id = 0
     with open(shots_data_file, newline='') as csvfile:
         reader = csv.DictReader(csvfile)  # Uses the first line as column headers
         for row in reader:
