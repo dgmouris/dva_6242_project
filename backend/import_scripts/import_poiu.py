@@ -33,17 +33,19 @@ def import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create):
         poiu_data_for = get_mapping_to_database_columns(situation, player_only_ids_for)
         poiu_data_against = get_mapping_to_database_columns(situation, player_only_ids_against)
 
+        try:
+            # get the player ids as a column mapping as a dict
+            poiu_for, created = get_or_create(db.session, POIU, **poiu_data_for)
+            poiu_against, created = get_or_create(db.session, POIU, **poiu_data_against)
 
-        # get the player ids as a column mapping as a dict
-        poiu_for, created = get_or_create(db.session, POIU, **poiu_data_for)
-        poiu_against, created = get_or_create(db.session, POIU, **poiu_data_against)
+            # update shot with poius.
+            shot.shooting_poiu_id = poiu_for.id
+            shot.defending_poiu_id = poiu_against.id
 
-        # update shot with poius.
-        shot.shooting_poiu_id = poiu_for.id
-        shot.defending_poiu_id = poiu_against.id
-
-        db.session.add(shot)
-        print(F"updated shot {shot.id} with POIU")
+            db.session.add(shot)
+            print(F"updated shot {shot.id} with POIU")
+        except Exception as error:
+            print(F"error skipped {shot.id}")
     db.session.commit()
     print("Updated all shots with POIUs!")
 
