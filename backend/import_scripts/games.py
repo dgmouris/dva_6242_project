@@ -36,6 +36,12 @@ def import_games_for_season(beginning_season_year, db, Game):
         season_id = all_games[game_id]["season"]
         game_type = all_games[game_id]["game_type"]
 
+        # Check if the game already exists in the database
+        existing_game = db.session.query(Game).filter_by(id=game_id).first()
+        if existing_game:
+            print(f"Game with id {game_id} already exists. Skipping...")
+            continue
+
         game = Game(
             id=game_id,
             season_id=season_id,
@@ -48,7 +54,8 @@ def import_games_for_season(beginning_season_year, db, Game):
             db.session.add(game)
             db.session.commit()
         except Exception as error:
-            print("FIX ME!")
+            db.session.rollback()  # Rollback the transaction in case of an error
+            print("Error occurred while adding game:")
             print(error)
-            print(game_id)
+            print(f"Game ID: {game_id}")
     print("Successful!")
