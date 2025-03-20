@@ -9,10 +9,16 @@ def import_season(db, Season):
 
     allSeasons = []
     for year in data:
-        allSeasons.append(
-            Season(id=int(year), name=year)
-        )
+        season_id = int(year)
+        # Check if the season already exists in the database
+        if not db.session.query(Season).filter_by(id=season_id).first():
+            allSeasons.append(
+                Season(id=season_id, name=year)
+            )
 
-    db.session.add_all(allSeasons)
-    db.session.commit()
-    print("Added all Seasons.")
+    if allSeasons:  # Only add if there are new seasons to insert
+        db.session.add_all(allSeasons)
+        db.session.commit()
+        print("Added all Seasons.")
+    else:
+        print("No new Seasons to add.")

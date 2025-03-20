@@ -56,11 +56,18 @@ def import_all_shots(db, Shot, Game):
         if index % 10000 == 0:
             print(F"imported {index} shots.")
         try:
+            # Check if the shot already exists in the database
+            existing_shot = db.session.query(Shot).filter_by(id=row["id"]).first()
+            if existing_shot:
+                #print(f"Shot with id {row['id']} already exists. Skipping...")
+                continue
+
             shot = Shot(**row)
             db.session.add(shot)
             db.session.commit()
         except Exception as error:
-            print("FIX ME")
+            db.session.rollback()  # Rollback the transaction in case of an error
+            print("Error occurred while adding shot:")
             print(error)
             print(row)
 
