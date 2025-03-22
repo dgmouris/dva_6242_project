@@ -1,12 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-import PlayerProfile from "../player/PlayerProfile"
 import POIUnitAnalysis from "./POIUnitAnalysis"
 import POIUPlayerProfiles from './POIUPlayerProfiles'
 import { useGlobalState } from '../state_providers/GlobalState'
 
 
+// this component is used on both similar matches and player match poius.
 export default function POIUnitCard({unitId, team, isPlayerMatchPOIU, isSimilarMatchPOIU}) {
 
   const {
@@ -25,9 +25,9 @@ export default function POIUnitCard({unitId, team, isPlayerMatchPOIU, isSimilarM
     units = allPlayerMatchPOIUs
   } else if (isSimilarMatchPOIU) {
     units = allSimilarPOIUs
-
   }
 
+  // sets the current poiu for player match and similarities
   const handleUnitChange = (value) => {
     if (isPlayerMatchPOIU) {
       setCurrentPlayerPOIU(value)
@@ -41,25 +41,18 @@ export default function POIUnitCard({unitId, team, isPlayerMatchPOIU, isSimilarM
   let fullName = ""
   if (currentPlayer) {
     fullName = `${currentPlayer.firstName.default} ${currentPlayer.lastName.default}`
-
   }
   // current unit is used for all of the analytics tables and charts
   // essentially we'll be fetching the data based on this.
-  let currentUnit;
+  let currentUnit
   let title
   if (isPlayerMatchPOIU) {
-    console.log("isPlayerMatchPOIU")
     currentUnit = currentPlayerPOIU
     title=`${fullName}'s POIU best match ${unitAsRankForTitle}`
   } else if (isSimilarMatchPOIU) {
-    console.log("isSimilarMatchPOIU")
     currentUnit = currentSimilarPOIU
     title=`Similar POIUs to ${fullName} best match ${unitAsRankForTitle}`
   }
-  console.log(isPlayerMatchPOIU)
-  console.log(isSimilarMatchPOIU)
-  console.log("current unit", currentSimilarPOIU)
-  console.log("unitId", unitId)
 
   if (!currentUnit) {
     return <></>

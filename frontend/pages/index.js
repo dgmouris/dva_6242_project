@@ -15,18 +15,12 @@ export default function Home() {
       <PlayerSearchInput />
       <SituationTabs />
 
-      {/* Just removing the tabs cards for testing  */
-        true &&
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <PlayerMatchPOIUSection />
-          {/* <POIUnitCard
-            title={`Best POIU Comparable`}
-            team={"Toronto Maple Leafs"}
-            isSimilarMatchPOIU={true}
-          /> */}
-          <SimilarPOIUSection />
-        </div>
-      }
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <PlayerMatchPOIUSection />
+        <SimilarPOIUSection />
+      </div>
+
     </div>
   );
 }

@@ -18,7 +18,6 @@ export default function SimilarPOIUSection() {
     currentPlayerPOIU,
     currentSimilarPOIU,
     currentSituation,
-    allPlayerMatchPOIUs,
     setCurrentSimilarPOIU,
     setAllSimilarPOIUs
   } = useGlobalState()
@@ -53,17 +52,15 @@ export default function SimilarPOIUSection() {
   useEffect(()=> {
     if (!currentPlayer) return // guard
     if (!currentPlayerPOIU) return // guard
-    console.log("FETCHED HERE")
+
     queryClient.invalidateQueries(`getSimilarUnitsByPoiu`)
     refetch()
-
   }, [currentPlayer, currentSituation, currentPlayerPOIU, setCurrentSimilarPOIU])
 
   // if no player show nothing.
   if (!currentPlayer) {
     return <></>
   }
-
 
   if (isPending) {
     return "Loading..."

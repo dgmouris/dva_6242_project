@@ -40,6 +40,7 @@ export default function PlayerMatchPOIUSection() {
     return data
   }
 
+  // this is just the async state management for fetch.
   let { isPending, error, data, refetch } = useQuery({
     queryKey: [`getUnitsByPlayerId`],
     queryFn: async ()=> {
@@ -51,7 +52,6 @@ export default function PlayerMatchPOIUSection() {
 
 
   // listen to the changes in player and situation and get and set the currentPOIU and allPlayerMatchPOIUs
-
   useEffect(()=> {
     if (!currentPlayer) return //
 
@@ -64,8 +64,6 @@ export default function PlayerMatchPOIUSection() {
   if (!currentPlayer) {
     return <></>
   }
-
-  // console.log(isPending, error, data)
 
   if (isPending) {
     return "Loading..."
