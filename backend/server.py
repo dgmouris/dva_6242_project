@@ -35,12 +35,12 @@ def search_players():
 
 # Note: new paths will be added below.
 
+# get units that generate the most shots by a a player id and a situation.
 @app.route("/get_units_by_player_id", methods=("GET",))
 def get_units_by_player_id():
     player_id = request.args.to_dict().get("player_id")
     situation = request.args.to_dict().get("situation")
 
-    # get units by
     unit_sql_query = F"""
         SELECT
             poiu.id,
@@ -88,6 +88,7 @@ def get_units_by_player_id():
 
     return jsonify(unit_ids)
 
+# gets all of the players in lists of forwards and dmen (for easier frontend parsing)
 @app.route("/get_players_by_poiu", methods=("GET",))
 def get_players_by_poiu():
     poiu = request.args.to_dict().get("poiu")

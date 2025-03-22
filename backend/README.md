@@ -39,4 +39,3 @@ In the `backend` directory you need to the following in the terminal (with your 
 Create your flask routes in `server.py`
 
 Important note here you need to have both the frontend and the backend running at the same time for this to work properly.
-s
