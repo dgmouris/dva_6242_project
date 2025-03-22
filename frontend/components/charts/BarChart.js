@@ -8,8 +8,6 @@ export default function BarChart(
 
   const ref = useRef();
   useEffect(()=> {
-
-    console.log("BarChart")
     createOrUpdateBarChart()
   }, [])
 

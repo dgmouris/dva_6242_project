@@ -1,3 +1,6 @@
+import {
+  useQuery,
+} from '@tanstack/react-query'
 
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -5,9 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Badge } from "@/components/ui/badge"
 
-import {
-  useQuery,
-} from '@tanstack/react-query'
+import { useGlobalState } from '../state_providers/GlobalState'
+
 
 const longPosition = (oneCharValue) => {
   if (oneCharValue === "C") return "Center"
@@ -17,7 +19,9 @@ const longPosition = (oneCharValue) => {
 }
 
 // takes in the id of the player based on nhl.com's id
-export default function PlayerProfile ({playerId, isSearchResult}) {
+export default function PlayerProfile ({playerId, isSearchResult, clearSearch}) {
+  const {currentPlayer, setCurrentPlayer} = useGlobalState()
+
   const { isPending, error, data } = useQuery({
     queryKey: [`player-${playerId}`],
     queryFn: async () => {
@@ -29,6 +33,13 @@ export default function PlayerProfile ({playerId, isSearchResult}) {
     staleTime: Infinity,
   })
 
+  // this is to select the player
+  const selectPlayer = () => {
+    // sets the player to the current object
+    setCurrentPlayer(data)
+    clearSearch()
+  }
+
   if (isPending) return 'Loading...'
 
   if (error) return 'An error has occurred: ' + error.message
@@ -36,23 +47,30 @@ export default function PlayerProfile ({playerId, isSearchResult}) {
   const playerName = `${data.firstName.default} ${data.lastName.default}`
 
   if (isSearchResult) {
-    return  <Card key={playerId} className="overflow-hidden">
+    if (!data) {
+      return <></>
+    }
+    return  <Card
+      key={playerId} className="overflow-hidden"
+      onClick={selectPlayer}
+    >
       <CardContent className="p-4">
         <div className="flex items-center space-x-4">
           <Avatar>
             <AvatarImage src={data.headshot} alt={playerName} />
             <AvatarFallback>{playerName.substring(0, 2)}</AvatarFallback>
           </Avatar>
+
           <div className="flex-1 space-y-1">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium leading-none">
-                {playerName} <span className="text-muted-foreground">#{data.sweaterNumbe}</span>
+            <div className="flex  items-center justify-between">
+              <p className="text-sm grow-1 font-medium leading-none">
+                {playerName} <span className="text-muted-foreground">#{data.sweaterNumber}</span>
               </p>
+              <p className="flex text-sm text-muted-foreground">{data.fullTeamName?.default}</p>
               <div className="rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
                 {data.position}
               </div>
             </div>
-            {/* <p className="text-sm text-muted-foreground">{player.team}</p> */}
           </div>
         </div>
       </CardContent>

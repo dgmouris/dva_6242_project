@@ -3,17 +3,67 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import PlayerProfile from "../player/PlayerProfile"
 import POIUnitAnalysis from "./POIUnitAnalysis"
+import POIUPlayerProfiles from './POIUPlayerProfiles'
+import { useGlobalState } from '../state_providers/GlobalState'
 
 
-export default function POIUnitCard({title, team, id}) {
+export default function POIUnitCard({unitId, team, isPlayerMatchPOIU, isSimilarMatchPOIU}) {
 
-  const DUMMY_UNITS = [
-    "Unit: 1",
-    "Unit: 2",
-    "Unit: 3",
-    "Unit: 4",
-    "Unit: 5"
-  ]
+  const {
+    currentPlayer,
+    currentPlayerPOIU,
+    currentSimilarPOIU,
+    setCurrentPlayerPOIU,
+    setCurrentSimilarPOIU,
+    allPlayerMatchPOIUs,
+    allSimilarPOIUs,
+  } = useGlobalState()
+
+  let units  = []
+  // using the same card for player match and similarities
+  if (isPlayerMatchPOIU) {
+    units = allPlayerMatchPOIUs
+  } else if (isSimilarMatchPOIU) {
+    units = allSimilarPOIUs
+
+  }
+
+  const handleUnitChange = (value) => {
+    if (isPlayerMatchPOIU) {
+      setCurrentPlayerPOIU(value)
+    } else if (isSimilarMatchPOIU) {
+      setCurrentSimilarPOIU(value)
+    }
+  }
+
+  // just used for titles.
+  let unitAsRankForTitle = allPlayerMatchPOIUs.indexOf(currentPlayerPOIU)+1
+  let fullName = ""
+  if (currentPlayer) {
+    fullName = `${currentPlayer.firstName.default} ${currentPlayer.lastName.default}`
+
+  }
+  // current unit is used for all of the analytics tables and charts
+  // essentially we'll be fetching the data based on this.
+  let currentUnit;
+  let title
+  if (isPlayerMatchPOIU) {
+    console.log("isPlayerMatchPOIU")
+    currentUnit = currentPlayerPOIU
+    title=`${fullName}'s POIU best match ${unitAsRankForTitle}`
+  } else if (isSimilarMatchPOIU) {
+    console.log("isSimilarMatchPOIU")
+    currentUnit = currentSimilarPOIU
+    title=`Similar POIUs to ${fullName} best match ${unitAsRankForTitle}`
+  }
+  console.log(isPlayerMatchPOIU)
+  console.log(isSimilarMatchPOIU)
+  console.log("current unit", currentSimilarPOIU)
+  console.log("unitId", unitId)
+
+  if (!currentUnit) {
+    return <></>
+  }
 
   return <Card className="border-t-8">
     <CardHeader
@@ -25,48 +75,27 @@ export default function POIUnitCard({title, team, id}) {
           <CardDescription>{team}</CardDescription>
         </div>
         {/* Units will have to be changed a bit differently */}
-        <Select className="flex-none" value={""} onValueChange={()=>{}}>
+        <Select className="flex-none" value={""} onValueChange={handleUnitChange}>
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="Select different POIU" />
           </SelectTrigger>
           <SelectContent>
-            {DUMMY_UNITS.map((dummyUnit, index)=> {
-
-               return <SelectItem key={dummyUnit} value={dummyUnit}>
+            {units?.map((unit, index)=> {
+               return <SelectItem key={unit} value={unit}>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full" />
-                  {dummyUnit}
+                  Best unit match {index+ 1}
                 </div>
               </SelectItem>
             })}
           </SelectContent>
         </Select>
-
       </div>
       {/* forwards handle if it's 4 */}
-      <div className="flex items-center w-full justify-between gap-2">
-        <PlayerProfile
-          playerId={8475786}
-        />
-        <PlayerProfile
-          playerId={8478402}
-        />
-        <PlayerProfile
-          playerId={8479318}
-        />
-      </div>
-      {/* defensemen */}
-      <div className="flex items-center w-3/5 justify-between gap-2">
-        <PlayerProfile
-          playerId={8480803}
-        />
-        <PlayerProfile
-          playerId={8475218}
-        />
-      </div>
+      <POIUPlayerProfiles unitId={unitId}/>
     </CardHeader>
     <CardContent>
-      <POIUnitAnalysis id={id}/>
+      <POIUnitAnalysis id={unitId}/>
     </CardContent>
   </Card>
 }
