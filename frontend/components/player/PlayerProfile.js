@@ -1,3 +1,6 @@
+
+import { Card, CardContent } from "@/components/ui/card"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +17,7 @@ const longPosition = (oneCharValue) => {
 }
 
 // takes in the id of the player based on nhl.com's id
-export default function PlayerProfile ({playerId}) {
+export default function PlayerProfile ({playerId, isSearchResult}) {
   const { isPending, error, data } = useQuery({
     queryKey: [`player-${playerId}`],
     queryFn: async () => {
@@ -32,7 +35,30 @@ export default function PlayerProfile ({playerId}) {
 
   const playerName = `${data.firstName.default} ${data.lastName.default}`
 
-  console.log(data)
+  if (isSearchResult) {
+    return  <Card key={playerId} className="overflow-hidden">
+      <CardContent className="p-4">
+        <div className="flex items-center space-x-4">
+          <Avatar>
+            <AvatarImage src={data.headshot} alt={playerName} />
+            <AvatarFallback>{playerName.substring(0, 2)}</AvatarFallback>
+          </Avatar>
+          <div className="flex-1 space-y-1">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium leading-none">
+                {playerName} <span className="text-muted-foreground">#{data.sweaterNumbe}</span>
+              </p>
+              <div className="rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                {data.position}
+              </div>
+            </div>
+            {/* <p className="text-sm text-muted-foreground">{player.team}</p> */}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  }
+
   return <>
     <div className="flex items-center justify-between mb-2">
       <div className="flex flex-col items-center gap-2">
