@@ -78,6 +78,49 @@ class POIU(db.Model, AsDictMixin):
 
     def __repr__(self):
         return f"<POIU {self.id}>"
+    
+class playerShiftTrack(db.Model, AsDictMixin):
+
+    id = db.Column(db.Float, primary_key=True)
+
+    game_id = db.Column(db.Integer, nullable=True)
+    shift_period = db.Column(db.Integer, nullable=True)
+
+    player_id = db.Column(db.Integer, nullable=True)
+    team_id = db.Column(db.Integer, nullable=True)
+    shift_number = db.Column(db.Integer, nullable=True)
+    
+    start_shift_number = db.Column(db.Float, nullable=True)
+    end_shift_number = db.Column(db.Float, nullable=True)
+    duration_number = db.Column(db.Float, nullable=True)
+
+    def __repr__(self):
+        return f"<PlayerShiftTrack {self.id}>"
+
+class gameShiftTrack(db.Model, AsDictMixin):
+
+    id = db.Column(db.Float, primary_key=True, autoincrement=True)
+
+    game_id = db.Column(db.Integer, nullable=True)
+    shift_period = db.Column(db.Integer, nullable=True)
+
+    player_id_1 = db.Column(db.Integer, nullable=True)
+    player_id_2 = db.Column(db.Integer, nullable=True)
+    player_id_3 = db.Column(db.Integer, nullable=True)
+    player_id_4 = db.Column(db.Integer, nullable=True)
+    player_id_5 = db.Column(db.Integer, nullable=True)
+    player_id_6 = db.Column(db.Integer, nullable=True)
+    team_id = db.Column(db.Integer, nullable=True)
+    shift_number = db.Column(db.Integer, nullable=True)
+    
+    start_shift_number = db.Column(db.Float, nullable=True)
+    end_shift_number = db.Column(db.Float, nullable=True)
+    duration_number = db.Column(db.Float, nullable=True)
+    situation = db.Column(db.String(10), nullable=True)
+
+    def __repr__(self):
+        return f"<GameShiftTrack {self.id}>"
+    
 
 class Shot(db.Model, AsDictMixin):
     # keys
