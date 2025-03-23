@@ -10,7 +10,7 @@ from sqlalchemy import  text, case
 
 from app import app, db
 # from flask import request, jsonify,current_app as app
-from models import Player, POIU
+from models import Player, POIU, Shot
 from flask import request, jsonify
 
 # this is needed so that next.js can access our application.
@@ -145,3 +145,25 @@ def get_similar_units_by_poiu():
 
     # just return the ids like the "get_units_by_player_id"
     return jsonify([int(poiu.id) for poiu in poius])
+
+
+@app.route("/get_shots_by_poiu")
+def get_shots_by_poiu():
+    poiu = request.args.to_dict().get("poiu")
+
+    shots_for_instances = Shot.query.filter(Shot.shooting_poiu_id==poiu).all()
+    shots_against_instances = Shot.query.filter(Shot.defending_poiu_id==poiu).all()
+
+    shots_for = []
+    shots_against = []
+
+    for shot in shots_for_instances:
+        shots_for.append(shot.as_dict())
+
+    for shot in shots_against_instances:
+        shots_against.append(shot.as_dict())
+
+    return jsonify({
+        "shots_for": shots_for,
+        "shots_against": shots_against
+    })
