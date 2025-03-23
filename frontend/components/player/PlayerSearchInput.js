@@ -18,6 +18,7 @@ export default function PlayerSearchInput () {
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
 
+  // this is all for the search
   let { isPending, error, data, refetch } = useQuery({
     queryKey: [`search-results`],
     queryFn: async ()=> {
@@ -26,15 +27,10 @@ export default function PlayerSearchInput () {
     enabled: searchQuery.length >= 3,
     staleTime: Infinity,
   })
-
-  const handleSearch = async () => {
-
-  }
-  useEffect(()=> {
+  const handleSearch =  () => {
     if (searchQuery.length >= 3) {
       // const data = await searchPlayers({name: searchQuery})
       refetch()
-      console.log(data)
       if (data) {
         setSearchResults(data.players)
       }
@@ -42,8 +38,17 @@ export default function PlayerSearchInput () {
     } else {
       setSearchResults([])
     }
-
+  }
+  useEffect(()=> {
+    handleSearch()
   }, [searchQuery])
+  // end the search section
+
+  // pass this down to clear the search once user selects it.
+  const clearSearch = () => {
+    setSearchQuery("")
+    setSearchResults([])
+  }
 
   return <div className="w-full max-w-3xl mx-auto p-4">
     <div className="flex flex-col space-y-4">
@@ -63,13 +68,15 @@ export default function PlayerSearchInput () {
         <Button onClick={handleSearch}>Search</Button>
       </div>
       <div className="space-y-3">
-        {
+        { searchResults &&
           searchResults.map((player)=> {
-            console.log(player)
+            if (!player) return
             return <PlayerProfile
               key={player.id}
-              isSearchResult={true}
               playerId={player.id}
+              // these two are only for search.
+              isSearchResult={true}
+              clearSearch={clearSearch}
             />
           })
         }

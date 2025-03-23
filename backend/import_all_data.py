@@ -6,8 +6,7 @@ from import_scripts.import_shifts import import_shifts_for_games
 from import_scripts.import_poiu import import_poiu_to_shot_mapping
 from app import app, db
 from models import Season, Game, Shot, Player, POIU, get_or_create
-import os,sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
+
 
 def main():
     print("Importing data to database...")
