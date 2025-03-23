@@ -7,6 +7,8 @@ import {
   useQueryClient
 } from '@tanstack/react-query'
 
+import { useGlobalState } from "../state_providers/GlobalState";
+
 import { getShotsByPOIU } from "@/utils/api/players"
 import { groupBy } from "@/utils/jsHelpers";
 
@@ -14,6 +16,7 @@ import { groupBy } from "@/utils/jsHelpers";
 export default function ShotsGeneratedByPlayerInPOIU({id}) {
   const queryClient = useQueryClient();
   const ref = useRef();
+  const {maxYAxis, setMaxYAxisIfMax} = useGlobalState()
 
   // async state management
   const QUERY_KEY_SHOTS_BY_POIU = `getShotsByPOIU-${id}`
@@ -48,7 +51,7 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
   useEffect(()=> {
     if (!data) return
     createOrUpdateBarChart()
-  }, [id, data])
+  }, [id, data, maxYAxis])
 
   const createOrUpdateBarChart = () => {
     // groups players together.
@@ -82,7 +85,6 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       formattedPlayerData.value["player"] = player
       formattedDataForChart.push(formattedPlayerData)
     })
-    console.log(formattedDataForChart)
 
     // delete everything in the svg
     d3.select(ref.current).selectAll("*").remove();
@@ -103,6 +105,8 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
     const shotsByPlayers = formattedDataForChart.map((shotDataByPlayer)=> {
       return shotDataByPlayer.value.shots
     })
+    // setMaxYAxisIfMax for all of the charts so that they're consistent.
+    setMaxYAxisIfMax(Math.max(...shotsByPlayers))
 
     // create scales
     const xScaleOuter = d3.scaleBand()
@@ -116,7 +120,7 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       .padding(0.05);
 
     const yScale = d3.scaleLinear()
-      .domain([0, Math.max(...shotsByPlayers)])
+      .domain([0, maxYAxis])
       .range([height, 0]);
 
     // add axes
@@ -155,9 +159,14 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       .text("Shots, Goals and Missed shots when playing as a unit")
 
     // colors
+    // note colors from https://colorbrewer2.org/#type=diverging&scheme=Spectral&n=3
     const color = d3.scaleOrdinal()
       .domain(subGroups)
-      .range(["blue", "green", "red", "yellow"]);
+      .range([
+        "#99d594",
+        "#fc8d59",
+        "#ffffbf",
+      ]);
 
     svg.selectAll("g.bar-group")
       .data(formattedDataForChart)
@@ -191,6 +200,26 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       .attr("fill", d => color(d.key))
       .attr("class", "bar");
 
+    // create legend
+    const legend = svg.append("g")
+        .attr("transform", `translate(${width - margin.right - margin.left}, ${0})`);
+
+    subGroups.forEach((group, i) => {
+        const legendRow = legend.append("g")
+            .attr("transform", `translate(0, ${i * 20})`);
+
+        legendRow.append("rect")
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", color(group));
+
+        legendRow.append("text")
+            .attr("x", 20)
+            .attr("y", 12)
+            .attr("text-anchor", "start")
+            .style("font-size", "12px")
+            .text(group);
+    });
   }
 
   // guard if there's no data.
