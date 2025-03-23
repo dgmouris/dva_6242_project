@@ -1,8 +1,9 @@
-import BarChart from "../charts/BarChart"
+import ShotsGeneratedByPlayerInPOIU from "../charts/ShotsGeneratedByPlayerInPOIU"
 
 
-export default function POIUnitAnalysis() {
+// this should have all of the charts and the
+export default function POIUnitAnalysis({id}) {
   return <>
-    <BarChart title={"test"}/>
+    <ShotsGeneratedByPlayerInPOIU id={id} />
   </>
 }
