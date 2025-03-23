@@ -14,6 +14,8 @@ def main():
     print("Importing data to database...")
     with app.app_context():
         # with this import script just comment out the ones that fail.
+        
+        
         import_season(db, Season)
         import_games_for_season("2023", db, Game)
         import_all_shots(db, Shot, Game)

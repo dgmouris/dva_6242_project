@@ -79,7 +79,7 @@ class POIU(db.Model, AsDictMixin):
     def __repr__(self):
         return f"<POIU {self.id}>"
     
-class playerShiftTrack(db.Model, AsDictMixin):
+class PlayerShiftTrack(db.Model, AsDictMixin):
 
     id = db.Column(db.Float, primary_key=True)
 
@@ -97,7 +97,7 @@ class playerShiftTrack(db.Model, AsDictMixin):
     def __repr__(self):
         return f"<PlayerShiftTrack {self.id}>"
 
-class gameShiftTrack(db.Model, AsDictMixin):
+class GameShiftTrack(db.Model, AsDictMixin):
 
     id = db.Column(db.Float, primary_key=True, autoincrement=True)
 
