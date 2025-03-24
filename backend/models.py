@@ -61,9 +61,13 @@ class Player(db.Model, AsDictMixin):
 
 
 class POIU(db.Model, AsDictMixin):
-    id=db.Column(db.Float, primary_key=True)
+    id=db.Column(db.Float, primary_key=True, autoincrement=True)
     # situation will need to be calculated from people on ice.
-    situation = db.Column(db.String(100), nullable=False)
+
+
+    #Take out situation for dup rows
+    #Situation still available in game_shift_data
+    #situation = db.Column(db.String(100), nullable=False)
 
     # players will be saved in the order of their ids.
     player_one_id = db.Column(db.Integer, nullable=True)
@@ -88,6 +92,7 @@ class PlayerShiftTrack(db.Model, AsDictMixin):
 
     player_id = db.Column(db.Integer, nullable=True)
     team_id = db.Column(db.Integer, nullable=True)
+    team_abbrev = db.Column(db.String(100), nullable=True)
     shift_number = db.Column(db.Integer, nullable=True)
     
     start_shift_number = db.Column(db.Float, nullable=True)
@@ -111,12 +116,13 @@ class GameShiftTrack(db.Model, AsDictMixin):
     player_id_5 = db.Column(db.Integer, nullable=True)
     player_id_6 = db.Column(db.Integer, nullable=True)
     team_id = db.Column(db.Integer, nullable=True)
-    shift_number = db.Column(db.Integer, nullable=True)
-    
+    team_abbrev = db.Column(db.String(100), nullable=True)
+    #shift_number = db.Column(db.Integer, nullable=True)
     start_shift_number = db.Column(db.Float, nullable=True)
     end_shift_number = db.Column(db.Float, nullable=True)
     duration_number = db.Column(db.Float, nullable=True)
     situation = db.Column(db.String(10), nullable=True)
+    poiu_id = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
         return f"<GameShiftTrack {self.id}>"
@@ -124,7 +130,8 @@ class GameShiftTrack(db.Model, AsDictMixin):
 
 class Shot(db.Model, AsDictMixin):
     # keys
-    shotID = db.Column(db.Float, primary_key=True)
+    auto_gen_id = db.Column(db.Float, primary_key=True, autoincrement=True)
+    shotID = db.Column(db.Float)
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
 
     # game relationships
@@ -134,9 +141,6 @@ class Shot(db.Model, AsDictMixin):
     season = db.Column(db.Float, nullable=True)
     shooterPlayerId = db.Column(db.Float, nullable=True)
 
-    # POIU relationships we can foreign key them later.
-    shooting_poiu_id = db.Column(db.Integer, nullable=True)
-    defending_poiu_id = db.Column(db.Integer, nullable=True)
 
     # data
     arenaAdjustedShotDistance = db.Column(db.Float, nullable=True)
@@ -261,11 +265,20 @@ class Shot(db.Model, AsDictMixin):
     yCord = db.Column(db.Float, nullable=True)
     yCordAdjusted = db.Column(db.Float, nullable=True)
 
-    # note still needs to the POIU table references.
-
-
     def __repr__(self):
         return F"<Shot {self.id}>"
+    
+
+class ShotPOIU (db.Model, AsDictMixin):
+    shot_poiu_id = db.Column(db.Float, primary_key=True, autoincrement=True)
+    id = db.Column(db.Float, nullable=True)
+    shooting_poiu_id = db.Column(db.Integer, nullable=True)
+    defending_poiu_id = db.Column(db.Integer, nullable=True)
+    
+    
+    def __repr__(self):
+        return F"<ShotPOIU {self.id}>"
+
 
 # get or create model
 # this is common to do in databases
