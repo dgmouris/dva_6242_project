@@ -26,6 +26,15 @@ export default function GlobalStateProvider({children}) {
   // list of similiar POIU ids.
   const [allSimilarPOIUs, setAllSimilarPOIUs] = useState([])
 
+  // max yAxis of the chart ShotsGeneratedByPlayerInPOIU
+  const [maxYAxis, setMaxYAxis] = useState(0)
+
+  const setMaxYAxisIfMax = (value) => {
+    if (value > maxYAxis) {
+      setMaxYAxis(value)
+    }
+  }
+
   return <GlobalState.Provider value={{
     currentPlayer, setCurrentPlayer,
     currentSituation, setCurrentSituation,
@@ -33,6 +42,7 @@ export default function GlobalStateProvider({children}) {
     allPlayerMatchPOIUs, setAllPlayerMatchPOIUs,
     currentSimilarPOIU, setCurrentSimilarPOIU,
     allSimilarPOIUs, setAllSimilarPOIUs,
+    maxYAxis, setMaxYAxisIfMax
   }}>
     {children}
   </GlobalState.Provider>

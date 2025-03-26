@@ -23,3 +23,9 @@ export async function getSimilarUnitsByPoiu({ poiuId, situation }) {
   const data = await response.json()
   return data
 }
+
+export async function getShotsByPOIU({poiu}) {
+  const response = await fetch(`${BASE_URL}/get_shots_by_poiu?poiu=${poiu}`)
+  const data = await response.json()
+  return data
+}
