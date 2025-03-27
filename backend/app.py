@@ -12,7 +12,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DB_CONNECTION_STRING")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] =  DATABASE_URL
+app.config['SQLALCHEMY_DATABASE_URI'] =  'postgresql+psycopg2://tyler:BXEzTQ3f5MXiFcEj@localhost:5433/POIU_Analytics'
 
 db = SQLAlchemy(app)
 

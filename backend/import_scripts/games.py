@@ -6,56 +6,52 @@ from pathlib import Path
 
 
 def import_games_for_season(beginning_season_year, db, Game):
-    print(F"Importing games for season {beginning_season_year}...")
+    print("Importing games from shots_2007-2023.csv...")
 
     file_path = Path(__file__)
-    root = file_path.parent.parent.parent
+    root = file_path.parent.parent.parent.parent
 
-    shots_data_file = Path(root / "data" / "shots" / "shots_2023_2024.csv")
+    shots_data_file = Path(root / "data" / "shots" / "shots_2007-2023.csv")
 
     # dictionary holding the game id and the year
     all_games = {}
 
+    all_sql_games = []
 
     with open(shots_data_file, newline='') as csvfile:
         reader = csv.DictReader(csvfile)  # Uses the first line as column headers
         for row in reader:
+            unq_id = row["season"] + row["game_id"] 
             game_id = int(row["game_id"])
             beginning_year = int(row["season"])
             is_playoff_game = int(row["isPlayoffGame"])
-            # breakpoint()
             end_year = beginning_year + 1
             all_year_id = int(F"{beginning_year}{end_year}")
-            all_games[game_id] = {}
-            all_games[game_id]["season"] = all_year_id
-            all_games[game_id]["game_type"] = is_playoff_game
+            all_games[unq_id] = {}
+            all_games[unq_id]["season"] = all_year_id
+            all_games[unq_id]["game_type"] = is_playoff_game
+            all_games[unq_id]["game_id"] = game_id
 
-    all_sql_games = []
+    
 
-    for game_id in all_games.keys():
-        season_id = all_games[game_id]["season"]
-        game_type = all_games[game_id]["game_type"]
-
-        # Check if the game already exists in the database
-        existing_game = db.session.query(Game).filter_by(id=game_id).first()
-        if existing_game:
-            print(f"Game with id {game_id} already exists. Skipping...")
-            continue
+    for unq_id in all_games.keys():
+        season_id = all_games[unq_id]["season"]
+        game_type = all_games[unq_id]["game_type"]
+        game_id = all_games[unq_id]["game_id"]
 
         game = Game(
-            id=game_id,
+            game_id=game_id,
             season_id=season_id,
             game_type=game_type
         )
         all_sql_games.append(
-           game
+        game
         )
-        try:
-            db.session.add(game)
-            db.session.commit()
-        except Exception as error:
-            db.session.rollback()  # Rollback the transaction in case of an error
-            print("Error occurred while adding game:")
-            print(error)
-            print(f"Game ID: {game_id}")
+
+    try:
+        db.session.bulk_save_objects(all_sql_games)
+        db.session.commit()
+    except Exception as error:
+        print("FIX ME!")
+        print(error)
     print("Successful!")

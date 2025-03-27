@@ -5,19 +5,18 @@ import requests
 def import_shifts_for_games(db, Game):
     print("Importing shift data for season")
 
-
     games = db.session.query(Game).filter_by(shift_data=None).all()
 
     for index, game in enumerate(games):
         # if the shift data is not none just continue because it's filled
-        external_shift_data = import_shift_data(game.get_nhl_game_id())
+        full_game_id = str(games[index].season.id)[0:4] + '0' + str(games[index].game_id)
+        external_shift_data = import_shift_data(full_game_id)
+        
         if game.shift_data is not None:
-
             continue
 
         try:
             game.shift_data = external_shift_data
-
             db.session.add(game)
             db.session.commit()
         except Exception as error:
@@ -40,7 +39,6 @@ def convert_minute_format_to_seconds(string_time_value):
 def import_shift_data(full_game_id):
     print(F"getting the shift data from nhl.com for {full_game_id}...")
     # URL building
-    # full_game_id = get_full_game_id(game_id, season)
     full_url = f"https://api.nhle.com/stats/rest/en/shiftcharts?cayenneExp=gameId={full_game_id}"
 
     response = requests.get(full_url)
