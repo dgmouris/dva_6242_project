@@ -24,8 +24,8 @@ def make_rows_values_correct_type(row):
     return row
 
 # create an object of player ids.
-def import_shot_game_data(shots_file):
-    print("importing shots...")
+def import_shot_game_data(season, shots_file):
+    print("parsing shots...")
 
     all_shot_rows = []
     with open(shots_file, newline='') as csvfile:
@@ -35,7 +35,8 @@ def import_shot_game_data(shots_file):
             # converts string numbers and all nubmers to float
             row_clean = make_rows_values_correct_type(row)
             # skip if not in test game id remove when serious
-            all_shot_rows.append(row_clean)
+            if int(row["season"]) == season:
+                all_shot_rows.append(row_clean)
 
     return all_shot_rows
 
@@ -43,24 +44,32 @@ def import_shot_game_data(shots_file):
 def import_all_shots(db, Shot):
     print("Importing all Shots...")
     file_path = Path(__file__)
-    root = file_path.parent.parent.parent
+    root = file_path.parent.parent.parent.parent
 
-    shots_data_file = Path(root / "data" / "shots" / "shots_2023_2024.csv")
+    season = 2007
+    shots_data_file = Path(root / "data" / "shots" / "shots_2007-2023.csv")
 
-    all_shot_rows = import_shot_game_data(shots_file=shots_data_file)
+    #for season in seasons_to_evaluate:
+    while season < 2024:
+        print('Importing ' + str(season))
+        all_shot_rows = import_shot_game_data(season, shots_file=shots_data_file)
 
-    shot_objects = []
+        shot_objects = []
 
-    print(F"Importing {len(all_shot_rows)} shots.")
-    for index, row in enumerate(all_shot_rows):
-        shot_objects.append(Shot(**row))
+        print(F"Importing {len(all_shot_rows)} shots.")
+        for index, row in enumerate(all_shot_rows):
+            if row['goalieIdForShot'] == '':
+                row['goalieIdForShot'] = -1.0
+            shot_objects.append(Shot(**row))
             
-    try:
-        db.session.bulk_save_objects(shot_objects)
-        db.session.commit()
-    except Exception as error:
-        print("FIX ME")
-        print(error)
-        print(row)
+        try:
+            db.session.bulk_save_objects(shot_objects)
+            db.session.commit()
+        except Exception as error:
+            print("FIX ME")
+            print(error)
+            print(row)
+
+        season = season + 1
 
     print("Importing Shots Successful!")

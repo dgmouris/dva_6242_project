@@ -27,7 +27,8 @@ class Season(db.Model, AsDictMixin):
         return f"<Season {self.name}>"
 
 class Game(db.Model, AsDictMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    game_id = db.Column(db.Integer, nullable=True)
     season_id = db.Column(db.Integer, db.ForeignKey('season.id'))
 
     # get the game from the api.
