@@ -35,29 +35,28 @@ def import_shot_poiu (db, text, Shot, POIU, insert, ShotPOIU):
     LEFT JOIN public.game_shift_track gs_off
         ON cast(cast(get_opp.season as varchar) || '0' || cast(get_opp.game_id as varchar) as integer) = gs_off.game_id
         AND period = gs_off.shift_period
-        AND time >= gs_off.start_shift_number + ((period - 1) * 1200)
-        AND time < gs_off.end_shift_number + ((period - 1) * 1200)
+        AND time >= gs_off.start_shift_number + ((period * 1200) -1200)
+        AND time < gs_off.end_shift_number + ((period * 1200) -1200)
         AND get_opp."teamCode" = gs_off.team_abbrev
     LEFT JOIN public.game_shift_track gs_def
         ON cast(cast(get_opp.season as varchar) || '0' || cast(get_opp.game_id as varchar) as integer) = gs_def.game_id
         AND get_opp.oppTeamCode = gs_def.team_abbrev
         AND period = gs_def.shift_period
-            AND time  >= gs_def.start_shift_number  + ((period - 1) * 1200)
-            AND time < gs_def.end_shift_number + ((period - 1) * 1200)
+            AND time  >= gs_def.start_shift_number  + ((period * 1200) -1200)
+            AND time < gs_def.end_shift_number + ((period * 1200) -1200)
     LEFT JOIN ot_check
         ON cast(cast(get_opp.season as varchar) || '0' || cast(get_opp.game_id as varchar) as integer) = ot_check.game_id
         AND get_opp."teamCode" = ot_check.team_abbrev
         AND period = ot_check.shift_period
-        AND time  >= ot_check.start_shift_number + ((period - 1) * 1200)
-        AND time <= ot_check.end_shift_number + ((period - 1) * 1200)
+        AND time  >= ot_check.start_shift_number + ((period * 1200) -1200)
+        AND time <= ot_check.end_shift_number + ((period * 1200) -1200)
 
     LEFT JOIN ot_check ot_opp
         ON cast(cast(get_opp.season as varchar) || '0' || cast(get_opp.game_id as varchar) as integer) = ot_opp.game_id
         AND get_opp.oppTeamCode = ot_opp.team_abbrev
         AND period = ot_opp.shift_period
-        AND time  >= ot_opp.start_shift_number + ((period - 1) * 1200)
-        AND time <= ot_opp.end_shift_number + ((period - 1) * 1200)
-    WHERE COALESCE(gs_off.poiu_id, ot_check.poiu_id ) IS NOT NULL AND COALESCE(gs_def.poiu_id, ot_opp.poiu_id ) IS NOT NULL
+        AND time  >= ot_opp.start_shift_number + ((period * 1200) -1200)
+        AND time <= ot_opp.end_shift_number + ((period * 1200) -1200)
 
             """).format(season=str(current_season), season2=current_season)
         )

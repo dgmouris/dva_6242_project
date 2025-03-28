@@ -1,6 +1,6 @@
 import time
 import requests
-
+import re
 # this needs to be called before the POIU import.
 def import_shifts_for_games(db, Game):
     print("Importing shift data for season")
@@ -45,13 +45,24 @@ def import_shift_data(full_game_id):
 
     full_shift_data = response.json()
 
+    pattern = re.compile("\d\d\:\d\d")
     # need to get the times of shifts in numbers
     # this is needed for the money puck data.
     for index, shift in enumerate(full_shift_data["data"]):
-        start_time_number = convert_minute_format_to_seconds(shift["startTime"])
-        end_time_number = convert_minute_format_to_seconds(shift["endTime"])
-        duration_number = convert_minute_format_to_seconds(shift["duration"])
-
+        if shift["startTime"] is not None:
+            if re.match(r"\d\d\:\d\d", shift["startTime"]):
+            
+                start_time_number = convert_minute_format_to_seconds(shift["startTime"])
+        if shift["endTime"] is not None:    
+            if re.match(r"\d\d\:\d\d", shift["endTime"]): 
+            
+                end_time_number = convert_minute_format_to_seconds(shift["endTime"])
+        if shift["duration"] is not None:
+            if re.match("\d\d\:\d\d", shift["duration"]):
+            
+                duration_number = convert_minute_format_to_seconds(shift["duration"])
+        else: duration_number = 0.0
+        
         # update the
         full_shift_data["data"][index]["startTimeNumber"] = start_time_number
         full_shift_data["data"][index]["endTimeNumber"] = end_time_number

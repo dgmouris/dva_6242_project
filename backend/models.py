@@ -118,7 +118,6 @@ class GameShiftTrack(db.Model, AsDictMixin):
     player_id_6 = db.Column(db.Integer, nullable=True)
     team_id = db.Column(db.Integer, nullable=True)
     team_abbrev = db.Column(db.String(100), nullable=True)
-    #shift_number = db.Column(db.Integer, nullable=True)
     start_shift_number = db.Column(db.Float, nullable=True)
     end_shift_number = db.Column(db.Float, nullable=True)
     duration_number = db.Column(db.Float, nullable=True)

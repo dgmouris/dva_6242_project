@@ -13,7 +13,7 @@ def import_players_for_season(beginning_season_year, db, Player):
 
 
     files_to_run = []
-    #shots_data_file = Path(root / "data" / "players" / F"skaters_{beginning_season_year}.csv")
+
     shots_data_file0 = Path(root / "data" / "players" / "skaters.csv")
     files_to_run.append(shots_data_file0)
     shots_data_file1 = Path(root / "data" / "players" / "skaters (1).csv")
@@ -62,11 +62,6 @@ def import_players_for_season(beginning_season_year, db, Player):
                 full_name = row["name"]
 
                 player_attr = {"playerId": player_id, "position": position, "name": full_name}
-                # skip over players that are already added
-                #if player_id == last_player_id:
-                    #continue
-                #last_player_id = player_id
-
 
                 if player_id in all_player_ids:
                     continue

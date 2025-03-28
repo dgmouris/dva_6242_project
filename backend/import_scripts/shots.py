@@ -28,6 +28,8 @@ def import_shot_game_data(season, shots_file):
     print("parsing shots...")
 
     all_shot_rows = []
+
+    distinct_seasons = []
     with open(shots_file, newline='') as csvfile:
         reader = csv.DictReader(csvfile)  # Uses the first line as column headers
 
@@ -37,6 +39,10 @@ def import_shot_game_data(season, shots_file):
             # skip if not in test game id remove when serious
             if int(row["season"]) == season:
                 all_shot_rows.append(row_clean)
+            #if int(row["season"]) not in distinct_seasons:
+                #print(row["season"])
+                #distinct_seasons.append(row["season"])
+        #print(distinct_seasons)
 
     return all_shot_rows
 
@@ -58,9 +64,12 @@ def import_all_shots(db, Shot):
 
         print(F"Importing {len(all_shot_rows)} shots.")
         for index, row in enumerate(all_shot_rows):
-            if row['goalieIdForShot'] == '':
-                row['goalieIdForShot'] = -1.0
-            shot_objects.append(Shot(**row))
+            if row['season'] == season:
+                if row['goalieIdForShot'] == '':
+                    row['goalieIdForShot'] = -1.0
+                if row['shooterPlayerId'] == '':
+                    row['shooterPlayerId'] = -1.0
+                shot_objects.append(Shot(**row))
             
         try:
             db.session.bulk_save_objects(shot_objects)

@@ -23,8 +23,8 @@ def update_shot_poiu (db, text, Shot, update):
     LEFT JOIN public.game_shift_track gs_off
         ON cast(cast(get_opp.season as varchar) || '0' || cast(get_opp.game_id as varchar) as integer) = gs_off.game_id
         AND period = gs_off.shift_period
-        AND time >= gs_off.start_shift_number + ((period - 1) * 1200)
-        AND time < gs_off.end_shift_number + ((period - 1) * 1200)
+        AND time >= gs_off.start_shift_number + ((period * 1200) - 1200)
+        AND time < gs_off.end_shift_number + ((period * 1200) - 1200)
         AND get_opp."teamCode" = gs_off.team_abbrev
 
             """).format(season=current_season)

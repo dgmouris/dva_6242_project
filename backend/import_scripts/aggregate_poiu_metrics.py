@@ -14,7 +14,7 @@ SELECT *
 FROM all_seasons
 WHERE situation in ('6 on 6', '6 on 5', '6 on 4', '6 on 3', '5 on 6', '4 on 6', '3 on 6', '5 on 5', '4 on 4', '4 on 5', '5 on 4', '3 on 5', '5 on 3', '3 on 5', '3 on 4', '4 on 3', '3 on 3')
 AND poiu_id IS NOT NULL
-AND seconds_on_ice >= 600
+--AND seconds_on_ice >= 600
 ),
 off_metrics as (
 SELECT distinct lt.situation, lt.season, lt.poiu_id, --s.event, 
@@ -36,11 +36,12 @@ FROM (SELECT distinct poiu_id, situation, season FROM limit_time) lt
 LEFT JOIN public.shot_poiu offense
 	ON lt.poiu_id = offense.shooting_poiu_id
 LEFT JOIN public.shot s
-	ON offense.id = s.id
+	ON offense.id = s.auto_gen_id
+	AND lt.season = CAST(s.season as varchar)
 ),
 def_metrics as (
-SELECT distinct lt2.situation, lt2.season, lt2.poiu_id, --s.event, 
-COALESCE(s2.goal,0) goal, --s.location, 
+SELECT distinct lt2.situation, lt2.season, lt2.poiu_id, 
+COALESCE(s2.goal,0) goal,  
 COALESCE(s2."shotDistance",0) "shotDistance", 
 CASE WHEN s2."shotType" = 'BACK' THEN 1 ELSE 0 END as shot_back, 
 CASE WHEN s2."shotType" = 'SNAP' THEN 1 ELSE 0 END as shot_snap, 
@@ -58,15 +59,16 @@ FROM (SELECT distinct poiu_id, situation, season FROM limit_time) lt2
 LEFT JOIN public.shot_poiu defense
 	ON lt2.poiu_id = defense.defending_poiu_id
 LEFT JOIN public.shot s2
-	ON defense.id = s2.id
+	ON defense.id = s2.auto_gen_id
+	AND lt2.season = CAST(s2.season as varchar)
 ),
 agg_offense as (
-SELECT situation, season, poiu_id, SUM(goal) goal_for, AVG("shotDistance") shot_distance_for, SUM(shot_back) shot_back_for, SUM(shot_snap) shot_snap_for, SUM(shot_defl) shot_defl_for, SUM(shot_tip) shot_tip_for, SUM(shot_wrap) shot_wrap_for, SUM(shot_slap) shot_slap_for, SUM(shot_wrist) shot_wrist_for, SUM("shotWasOnGoal") shot_on_goal_for, SUM("shotRebound") shot_rebound_for, SUM(home_goal) home_goal_for, SUM(away_goal) away_goal_for
+SELECT situation, season, poiu_id, SUM(goal) goal_for, AVG("shotDistance") avg_shot_distance_for, SUM(shot_back) shot_back_for, SUM(shot_snap) shot_snap_for, SUM(shot_defl) shot_defl_for, SUM(shot_tip) shot_tip_for, SUM(shot_wrap) shot_wrap_for, SUM(shot_slap) shot_slap_for, SUM(shot_wrist) shot_wrist_for, SUM("shotWasOnGoal") shot_on_goal_for, SUM("shotRebound") shot_rebound_for, SUM(home_goal) home_goal_for, SUM(away_goal) away_goal_for
 FROM off_metrics
 GROUP BY situation, season, poiu_id
 ),
 agg_defense as (
-SELECT situation, season, poiu_id, SUM(goal) goal_against, AVG("shotDistance") shot_distance_against, SUM("shotWasOnGoal") shot_on_goal_against, SUM("shotRebound") shot_rebound_against, SUM(home_goal) home_goal_against, SUM(away_goal) away_goal_against
+SELECT situation, season, poiu_id, SUM(goal) goal_against, AVG("shotDistance") avg_shot_distance_against, SUM("shotWasOnGoal") shot_on_goal_against, SUM("shotRebound") shot_rebound_against, SUM(home_goal) home_goal_against, SUM(away_goal) away_goal_against
 FROM def_metrics
 GROUP BY situation, season, poiu_id
 ),
@@ -74,8 +76,8 @@ combine_sides as (
 SELECT COALESCE(agg_offense.situation, agg_defense.situation) situation,
 COALESCE(agg_offense.poiu_id, agg_defense.poiu_id) poiu_id,
 COALESCE(agg_offense.season, agg_defense.season) season, 
-goal_for, shot_distance_for, shot_back_for, shot_snap_for, shot_defl_for, shot_tip_for, shot_wrap_for, shot_slap_for, shot_wrist_for, shot_on_goal_for, shot_rebound_for, home_goal_for, away_goal_for, 
-goal_against, shot_distance_against, shot_on_goal_against, shot_rebound_against, home_goal_against, away_goal_against, seconds_on_ice, games_played
+goal_for, avg_shot_distance_for, shot_back_for, shot_snap_for, shot_defl_for, shot_tip_for, shot_wrap_for, shot_slap_for, shot_wrist_for, shot_on_goal_for, shot_rebound_for, home_goal_for, away_goal_for, 
+goal_against, avg_shot_distance_against, shot_on_goal_against, shot_rebound_against, home_goal_against, away_goal_against, seconds_on_ice, games_played
 FROM agg_offense
 FULL OUTER JOIN agg_defense
 	ON agg_offense.situation = agg_defense.situation
@@ -88,6 +90,4 @@ LEFT JOIN all_seasons
 )
 SELECT *
 FROM combine_sides
-ORDER BY seconds_on_ice DESC
-
             """)
