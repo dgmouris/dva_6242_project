@@ -198,7 +198,7 @@ def get_similarity_poiu_stats_by_poiu():
     forwards, defensemen = get_players_from_db_formatted(poiu)
 
     base_poiu = {
-        "id": poiu,
+        "id": int(poiu),
         "players": {
             "forwards": forwards,
             "defensemen": defensemen
