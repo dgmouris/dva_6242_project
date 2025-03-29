@@ -194,9 +194,25 @@ def get_similarity_poiu_stats_by_poiu():
     # this can get cleaned up later as I know this is make a lot of queries to the
     # the data base but please no judgement yet on this one we can clean it up later.
 
-    all_similarity_data = []
     shots_for, shots_against = get_shots_for_and_against_for_poiu(poiu)
     forwards, defensemen = get_players_from_db_formatted(poiu)
+
+    base_poiu = {
+        "id": poiu,
+        "players": {
+            "forwards": forwards,
+            "defensemen": defensemen
+        },
+        "shots": {
+            "shots_for": shots_for,
+            "shots_against": shots_against
+        }
+    }
+
+
+    all_similarity_data = []
+    shots_for, shots_against = get_shots_for_and_against_for_poiu(similarity_data.similar_poiu_id_one)
+    forwards, defensemen = get_players_from_db_formatted(similarity_data.similar_poiu_id_one)
 
     first_similar_poiu ={
         "id": similarity_data.similar_poiu_id_one,
@@ -284,4 +300,7 @@ def get_similarity_poiu_stats_by_poiu():
         all_similarity_data.append(fifth_similar_poiu)
 
 
-    return jsonify(all_similarity_data)
+    return jsonify({
+        "base_poiu": base_poiu,
+        "similar_poius": all_similarity_data
+    })
