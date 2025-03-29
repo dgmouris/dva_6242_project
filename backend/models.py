@@ -61,7 +61,7 @@ class Player(db.Model, AsDictMixin):
 
 
 class POIU(db.Model, AsDictMixin):
-    id=db.Column(db.Float, primary_key=True)
+    id = db.Column(db.Float, primary_key=True)
     # situation will need to be calculated from people on ice.
     situation = db.Column(db.String(100), nullable=False)
 
@@ -223,6 +223,24 @@ class Shot(db.Model, AsDictMixin):
 
     def __repr__(self):
         return F"<Shot {self.id}>"
+
+class POIUSimilarities(db.Model):
+    id = db.Column(db.Float, primary_key=True)
+    # this is the poiu that we're comparing to.
+    poiu_id = db.Column(db.Float)
+    year = db.Column(db.Integer) # year of the poiu created
+    # the comparison type either going to be "year" or "all_time"
+    comparison_type = db.Column(db.String(100), nullable=False)
+    similar_poiu_id_one = db.Column(db.Float, nullable=True)
+    similar_poiu_id_one_score = db.Column(db.Float, nullable=True)
+    similar_poiu_id_two = db.Column(db.Float, nullable=True)
+    similar_poiu_id_two_score = db.Column(db.Float, nullable=True)
+    similar_poiu_id_three = db.Column(db.Float, nullable=True)
+    similar_poiu_id_three_score = db.Column(db.Float, nullable=True)
+    similar_poiu_id_four = db.Column(db.Float, nullable=True)
+    similar_poiu_id_four_score = db.Column(db.Float, nullable=True)
+    similar_poiu_id_five = db.Column(db.Float, nullable=True)
+    similar_poiu_id_five_score = db.Column(db.Float, nullable=True)
 
 # get or create model
 # this is common to do in databases
