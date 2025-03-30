@@ -56,14 +56,11 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
   const createOrUpdateBarChart = () => {
     // groups players together.
     let shotsForByPlayersData = groupBy(data.shots_for, "shooterName")
-    console.log(shotsForByPlayersData)
 
     // format the data so that it can be used in groups
     let formattedDataForChart = []
     Object.keys(shotsForByPlayersData).map((player)=> {
-      // console.log("LOOOK HERE")
       let playerShotData = shotsForByPlayersData[player]
-      // formattedDataForChart = {}
       let formattedPlayerData = {
         key: player,
         value: {}
@@ -76,7 +73,6 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       }, 0)
       // get the missed shots by events
       formattedPlayerData.value["missed"] =playerShotData.reduce((result, shotData)=> {
-        console.log(shotData.event)
         if (shotData.event == "MISS") {
           return result + 1
         }

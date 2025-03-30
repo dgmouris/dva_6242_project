@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; }
+.link { stroke: #aaa; stroke-width: 2px; }
+.node { cursor: pointer; }
+.label { font-size: 14px; fill: black; pointer-events: none; }
+.inner-label { font-size: 10px; fill: white; text-anchor: middle; dominant-baseline: middle; }

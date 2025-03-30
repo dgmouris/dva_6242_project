@@ -29,8 +29,6 @@ export default function POIUPlayerProfiles({unitId}) {
 
   useEffect(()=> {
     if (!unitId) return // guard
-    console.log("POIUPlayerProfiles")
-    console.log("unitId", unitId)
     queryClient.invalidateQueries(queryKey)
     refetch()
   },[currentPlayerPOIU, unitId])
