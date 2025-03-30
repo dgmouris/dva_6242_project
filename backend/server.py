@@ -199,10 +199,7 @@ def get_similarity_poiu_stats_by_poiu():
 
     base_poiu = {
         "id": int(poiu),
-        "players": {
-            "forwards": forwards,
-            "defensemen": defensemen
-        },
+        "players": [*forwards, *defensemen],
         "shots": {
             "shots_for": shots_for,
             "shots_against": shots_against
@@ -217,10 +214,7 @@ def get_similarity_poiu_stats_by_poiu():
     first_similar_poiu ={
         "id": similarity_data.similar_poiu_id_one,
         "similarity": similarity_data.similar_poiu_id_one_score,
-        "players": {
-            "forwards": forwards,
-            "defensemen": defensemen
-        },
+        "players": [*forwards, *defensemen],
         "shots": {
             "shots_for": shots_for,
             "shots_against": shots_against
@@ -234,10 +228,7 @@ def get_similarity_poiu_stats_by_poiu():
         second_similar_poiu ={
             "id": similarity_data.similar_poiu_id_two,
             "similarity": similarity_data.similar_poiu_id_two_score,
-            "players": {
-                "forwards": forwards,
-                "defensemen": defensemen
-            },
+            "players": [*forwards, *defensemen],
             "shots": {
                 "shots_for": shots_for,
                 "shots_against": shots_against
@@ -252,10 +243,7 @@ def get_similarity_poiu_stats_by_poiu():
         third_similar_poiu ={
             "id": similarity_data.similar_poiu_id_three,
             "similarity": similarity_data.similar_poiu_id_three_score,
-            "players": {
-                "forwards": forwards,
-                "defensemen": defensemen
-            },
+            "players": [*forwards, *defensemen],
             "shots": {
                 "shots_for": shots_for,
                 "shots_against": shots_against
@@ -270,10 +258,7 @@ def get_similarity_poiu_stats_by_poiu():
         fourth_similar_poiu ={
             "id": similarity_data.similar_poiu_id_four,
             "similarity": similarity_data.similar_poiu_id_four_score,
-            "players": {
-                "forwards": forwards,
-                "defensemen": defensemen
-            },
+            "players": [*forwards, *defensemen],
             "shots": {
                 "shots_for": shots_for,
                 "shots_against": shots_against
@@ -288,10 +273,7 @@ def get_similarity_poiu_stats_by_poiu():
         fifth_similar_poiu ={
             "id": similarity_data.similar_poiu_id_five,
             "similarity": similarity_data.similar_poiu_id_five_score,
-            "players": {
-                "forwards": forwards,
-                "defensemen": defensemen
-            },
+            "players": [*forwards, *defensemen],
             "shots": {
                 "shots_for": shots_for,
                 "shots_against": shots_against
