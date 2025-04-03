@@ -26,7 +26,6 @@ export default function SituationTabs() {
         <TabsTrigger value="5on5">5 on 5</TabsTrigger>
         <TabsTrigger value="5on4">PowerPlay </TabsTrigger>
         <TabsTrigger value="4on5">Penalty Kill</TabsTrigger>
-        <TabsTrigger value="5on3">5 on 3</TabsTrigger>
       </TabsList>
     </Tabs>
   </div>
