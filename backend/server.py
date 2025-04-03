@@ -10,13 +10,57 @@ from sqlalchemy import  text, case
 
 from app import app, db
 # from flask import request, jsonify,current_app as app
-from models import Player, POIU, Shot
+from models import Player, POIU, Shot, POIUSimilarities
 from flask import request, jsonify
 
 # this is needed so that next.js can access our application.
 from flask_cors import CORS
 CORS(app)
 
+# helper methods
+def get_players_from_db_formatted(poiu):
+    poiu = POIU.query.filter(POIU.id==poiu).first()
+    # custom order to make it easier to render on the frontend
+    custom_order = case(
+       {"L": 1, "C": 2, "R": 3, "D": 4},
+        value=Player.position,
+        else_=5  # Default order for other roles
+    )
+
+    # get the players
+    players = Player.query.filter(
+        Player.id.in_(poiu.all_players)
+    ).order_by(
+        custom_order
+    ).all()
+
+    forwards = []
+    defensemen = []
+    FORWARD_POSITIONS = ["C", "L", "R"]
+    DEFENSE_POSITIONS = ["D"]
+
+    for player in players:
+        if player.position in DEFENSE_POSITIONS:
+            defensemen.append(player.as_dict())
+        elif player.position in FORWARD_POSITIONS:
+            forwards.append(player.as_dict())
+    return forwards, defensemen
+
+def get_shots_for_and_against_for_poiu(poiu):
+    shots_for_instances = Shot.query.filter(Shot.shooting_poiu_id==poiu).all()
+    shots_against_instances = Shot.query.filter(Shot.defending_poiu_id==poiu).all()
+
+    shots_for = []
+    shots_against = []
+
+    for shot in shots_for_instances:
+        shots_for.append(shot.as_dict())
+
+    for shot in shots_against_instances:
+        shots_against.append(shot.as_dict())
+    return shots_for, shots_against
+
+# routes
 @app.route("/search_players", methods=("GET",))
 def search_players():
     # convert the arguments to a dictionary
@@ -93,32 +137,7 @@ def get_units_by_player_id():
 def get_players_by_poiu():
     poiu = request.args.to_dict().get("poiu")
 
-    # get the poiu
-    poiu = POIU.query.filter(POIU.id==poiu).first()
-    # custom order to make it easier to render on the frontend
-    custom_order = case(
-       {"L": 1, "C": 2, "R": 3, "D": 4},
-        value=Player.position,
-        else_=5  # Default order for other roles
-    )
-
-    # get the players
-    players = Player.query.filter(
-        Player.id.in_(poiu.all_players)
-    ).order_by(
-        custom_order
-    ).all()
-
-    forwards = []
-    defensemen = []
-    FORWARD_POSITIONS = ["C", "L", "R"]
-    DEFENSE_POSITIONS = ["D"]
-
-    for player in players:
-        if player.position in DEFENSE_POSITIONS:
-            defensemen.append(player.as_dict())
-        elif player.position in FORWARD_POSITIONS:
-            forwards.append(player.as_dict())
+    forwards, defensemen = get_players_from_db_formatted(poiu)
 
     return jsonify({
         "forwards": forwards,
@@ -131,39 +150,139 @@ def get_players_by_poiu():
 @app.route("/get_similar_units_by_poiu")
 def get_similar_units_by_poiu():
     poiu = request.args.to_dict().get("poiu")
-    situation = request.args.to_dict().get("situation")
     # I don't care about this one because it'll be removed
-    from sqlalchemy.sql.expression import func
 
     # get some random poius so we can get it on the
     # frontend
-    poius = POIU.query.filter(
-        POIU.situation==situation
-    ).order_by(
-        func.random()
-    ).limit(5).all()
+    similar_poiu_data = POIUSimilarities.query.filter(
+        POIUSimilarities.poiu_id==poiu,
+    ).first()
+
+    poius = [
+        similar_poiu_data.similar_poiu_id_one,
+        similar_poiu_data.similar_poiu_id_two,
+        similar_poiu_data.similar_poiu_id_three,
+        similar_poiu_data.similar_poiu_id_four,
+        similar_poiu_data.similar_poiu_id_five
+    ]
 
     # just return the ids like the "get_units_by_player_id"
-    return jsonify([int(poiu.id) for poiu in poius])
+    return jsonify(poius)
 
 
 @app.route("/get_shots_by_poiu")
 def get_shots_by_poiu():
     poiu = request.args.to_dict().get("poiu")
 
-    shots_for_instances = Shot.query.filter(Shot.shooting_poiu_id==poiu).all()
-    shots_against_instances = Shot.query.filter(Shot.defending_poiu_id==poiu).all()
-
-    shots_for = []
-    shots_against = []
-
-    for shot in shots_for_instances:
-        shots_for.append(shot.as_dict())
-
-    for shot in shots_against_instances:
-        shots_against.append(shot.as_dict())
+    shots_for, shots_against = get_shots_for_and_against_for_poiu(poiu)
 
     return jsonify({
         "shots_for": shots_for,
         "shots_against": shots_against
+    })
+
+# this is for graphs.
+@app.route('/get_similarity_poiu_stats_by_poiu')
+def get_similarity_poiu_stats_by_poiu():
+    poiu = request.args.to_dict().get("poiu")
+
+    # get the similarity data for the poiu
+    similarity_data = POIUSimilarities.query.filter(
+        POIUSimilarities.poiu_id==poiu
+    ).first()
+
+    # this can get cleaned up later as I know this is make a lot of queries to the
+    # the data base but please no judgement yet on this one we can clean it up later.
+
+    shots_for, shots_against = get_shots_for_and_against_for_poiu(poiu)
+    forwards, defensemen = get_players_from_db_formatted(poiu)
+
+    base_poiu = {
+        "id": int(poiu),
+        "players": [*forwards, *defensemen],
+        "shots": {
+            "shots_for": shots_for,
+            "shots_against": shots_against
+        }
+    }
+
+
+    all_similarity_data = []
+    shots_for, shots_against = get_shots_for_and_against_for_poiu(similarity_data.similar_poiu_id_one)
+    forwards, defensemen = get_players_from_db_formatted(similarity_data.similar_poiu_id_one)
+
+    first_similar_poiu ={
+        "id": similarity_data.similar_poiu_id_one,
+        "similarity": similarity_data.similar_poiu_id_one_score,
+        "players": [*forwards, *defensemen],
+        "shots": {
+            "shots_for": shots_for,
+            "shots_against": shots_against
+        }
+    }
+    all_similarity_data.append(first_similar_poiu)
+
+    shots_for, shots_against = get_shots_for_and_against_for_poiu(similarity_data.similar_poiu_id_two)
+    forwards, defensemen = get_players_from_db_formatted(similarity_data.similar_poiu_id_two)
+    if similarity_data.similar_poiu_id_two:
+        second_similar_poiu ={
+            "id": similarity_data.similar_poiu_id_two,
+            "similarity": similarity_data.similar_poiu_id_two_score,
+            "players": [*forwards, *defensemen],
+            "shots": {
+                "shots_for": shots_for,
+                "shots_against": shots_against
+            }
+        }
+        all_similarity_data.append(second_similar_poiu)
+
+
+    if similarity_data.similar_poiu_id_three:
+        shots_for, shots_against = get_shots_for_and_against_for_poiu(similarity_data.similar_poiu_id_three)
+        forwards, defensemen = get_players_from_db_formatted(similarity_data.similar_poiu_id_three)
+        third_similar_poiu ={
+            "id": similarity_data.similar_poiu_id_three,
+            "similarity": similarity_data.similar_poiu_id_three_score,
+            "players": [*forwards, *defensemen],
+            "shots": {
+                "shots_for": shots_for,
+                "shots_against": shots_against
+            }
+        }
+        all_similarity_data.append(third_similar_poiu)
+
+    if similarity_data.similar_poiu_id_four:
+        shots_for, shots_against = get_shots_for_and_against_for_poiu(similarity_data.similar_poiu_id_four)
+        forwards, defensemen = get_players_from_db_formatted(similarity_data.similar_poiu_id_four)
+
+        fourth_similar_poiu ={
+            "id": similarity_data.similar_poiu_id_four,
+            "similarity": similarity_data.similar_poiu_id_four_score,
+            "players": [*forwards, *defensemen],
+            "shots": {
+                "shots_for": shots_for,
+                "shots_against": shots_against
+            }
+        }
+        all_similarity_data.append(fourth_similar_poiu)
+
+    if similarity_data.similar_poiu_id_five:
+        shots_for, shots_against = get_shots_for_and_against_for_poiu(similarity_data.similar_poiu_id_five)
+        forwards, defensemen = get_players_from_db_formatted(similarity_data.similar_poiu_id_five)
+
+        fifth_similar_poiu ={
+            "id": similarity_data.similar_poiu_id_five,
+            "similarity": similarity_data.similar_poiu_id_five_score,
+            "players": [*forwards, *defensemen],
+            "shots": {
+                "shots_for": shots_for,
+                "shots_against": shots_against
+            }
+        }
+        all_similarity_data.append(fifth_similar_poiu)
+
+
+    return jsonify({
+        "base_poiu": base_poiu,
+        "similar_poius": all_similarity_data
     })

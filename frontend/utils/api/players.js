@@ -29,3 +29,9 @@ export async function getShotsByPOIU({poiu}) {
   const data = await response.json()
   return data
 }
+
+export async function getSimilarityPoiuStatsByPoiu({poiu}) {
+  const response = await fetch(`${BASE_URL}/get_similarity_poiu_stats_by_poiu?poiu=${poiu}`)
+  const data = await response.json()
+  return data
+}
