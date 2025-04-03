@@ -62,7 +62,6 @@ export default function SimilarityNetworkGraph({id}) {
   ])
 
   const createOrUpdateBarChart = () => {
-    console.log("createOrUpdateBarChart")
     // the nodes of the graph is the data
     // including the base poiu
     const nodes = [data.base_poiu, ...data.similar_poius]
@@ -133,7 +132,6 @@ export default function SimilarityNetworkGraph({id}) {
 
     simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
-        console.log(d)
         // similar ones closer
         let closer = (100-d.percentage)
         // think about a cool way to do this.
