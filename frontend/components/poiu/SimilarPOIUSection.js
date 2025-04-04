@@ -28,9 +28,6 @@ export default function SimilarPOIUSection() {
       poiuId: currentPlayerPOIU,
       situation: currentSituation
     })
-    console.log("getSimilarPOIUs")
-    console.log(data)
-
     // set the list used for the select
     setAllSimilarPOIUs(data)
     // get the first item and pass it in
