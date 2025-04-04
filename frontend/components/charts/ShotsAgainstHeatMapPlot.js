@@ -108,6 +108,14 @@ export default function ShotsAgainstHeatMapPlot({id}) {
     // remove and add.
     d3.select(ref.current).selectAll("*").remove();
 
+
+    const shotHeatMapBins = assignShotToHeatMapBins(data.shots_against, heatMapBins, binSize)
+
+    const maxShotsAgainstPerGame = Math.max(...shotHeatMapBins.flat())
+
+    const colorScale = d3.scaleSequential(d3.interpolateInferno)
+    .domain([0, maxShotsAgainstPerGame]);
+
     // when createing the svg
     const svg = d3
     .select(ref.current)
@@ -118,14 +126,6 @@ export default function ShotsAgainstHeatMapPlot({id}) {
       "translate(" + margin.left + "," + margin.top + ")");
 
 
-
-
-    const shotHeatMapBins = assignShotToHeatMapBins(data.shots_against, heatMapBins, binSize)
-
-    const maxShotsAgainstPerGame = Math.max(...shotHeatMapBins.flat())
-
-    const colorScale = d3.scaleSequential(d3.interpolateInferno)
-    .domain([0, maxShotsAgainstPerGame]);
 
 
     let testData = heatMapBins
@@ -173,6 +173,21 @@ export default function ShotsAgainstHeatMapPlot({id}) {
       .attr("class", "title")
       .text(`Shots Against when playing together (bins size of ${binSize} ft)`)
 
+      // Add X axis
+    let xScale = d3.scaleLinear()
+      .domain(xDomain)
+      .range([ 0, width ]);
+
+      svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xScale));
+
+    // Add Y axis
+    let yScale = d3.scaleLinear()
+      .domain(yDomain)
+      .range([ height, 0]);
+    svg.append("g")
+      .call(d3.axisLeft(yScale));
 
   }
 
