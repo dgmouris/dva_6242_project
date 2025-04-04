@@ -120,7 +120,7 @@ export default function ShotsForScatterPlot({id}) {
       }
     })
 
-    console.log(playerToColorMapping)
+
     // Add X axis
     let xScale = d3.scaleLinear()
       .domain(xDomain)
@@ -186,10 +186,8 @@ export default function ShotsForScatterPlot({id}) {
         .attr("class", "label")
         .text(d.label);
     });
-}
+  }
 
-
-  console.log({isLoading, error, data})
   if (isLoading) {
     return <div width={MAX_WIDTH} height={MAX_HEIGHT}>
       Loading Shot Scatter plot...
