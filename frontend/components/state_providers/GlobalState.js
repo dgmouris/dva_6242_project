@@ -26,6 +26,10 @@ export default function GlobalStateProvider({children}) {
   // list of similiar POIU ids.
   const [allSimilarPOIUs, setAllSimilarPOIUs] = useState([])
 
+  // shots against pergame max
+  const [maxShotsAgainstPerGame, setMaxShotsAgainstPerGame] = useState(1)
+
+
   // max yAxis of the chart ShotsGeneratedByPlayerInPOIU
   const [maxYAxis, setMaxYAxis] = useState(0)
 
