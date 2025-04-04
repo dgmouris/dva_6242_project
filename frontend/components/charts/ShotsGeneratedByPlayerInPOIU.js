@@ -57,6 +57,10 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
     // groups players together.
     let shotsForByPlayersData = groupBy(data.shots_for, "shooterName")
 
+    // group by games so that you can get the average.
+    let shotsByGame = groupBy(data.shots_for, "game_id")
+    let gamesPlayerTogether = Object.keys(shotsByGame).length
+
     // format the data so that it can be used in groups
     let formattedDataForChart = []
     Object.keys(shotsForByPlayersData).map((player)=> {
@@ -65,19 +69,19 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
         key: player,
         value: {}
       }
-
-      formattedPlayerData.value["shots"] = playerShotData.length
+      // divided by games so that there's a bit more information here.
+      formattedPlayerData.value["shots"] = playerShotData.length /gamesPlayerTogether
       // get the goals
       formattedPlayerData.value["goals"] = playerShotData.reduce((result, shotData)=> {
         return result + shotData.goal
-      }, 0)
+      }, 0) / gamesPlayerTogether
       // get the missed shots by events
       formattedPlayerData.value["missed"] =playerShotData.reduce((result, shotData)=> {
         if (shotData.event == "MISS") {
           return result + 1
         }
         return result
-      }, 0)
+      }, 0) /gamesPlayerTogether
       formattedPlayerData.value["player"] = player
       formattedDataForChart.push(formattedPlayerData)
     })
@@ -144,7 +148,7 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       .attr("y", -margin.left/2)
       .attr("text-anchor", "middle")
       .attr("class", "axis-label")
-      .text("Count of Goals/Shots/Missed");
+      .text("Goals/Shots/Missed per game");
 
     // title
     svg.append("text")
@@ -152,7 +156,7 @@ export default function ShotsGeneratedByPlayerInPOIU({id}) {
       .attr("x", margin.right +40)
       .attr("y", -margin.top/2)
       .attr("class", "title")
-      .text("Shots, Goals and Missed shots when playing as a unit")
+      .text("Shots, Goals and Missed shots per game when playing as a unit")
 
     // colors
     // note colors from https://colorbrewer2.org/#type=diverging&scheme=Spectral&n=3
