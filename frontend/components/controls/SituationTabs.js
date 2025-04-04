@@ -20,7 +20,7 @@ export default function SituationTabs() {
       value={currentSituation}
       onValueChange={setCurrentSituation}
     >
-      <TabsList className="grid text-center grid-cols-4"
+      <TabsList className="grid text-center grid-cols-3"
 
       >
         <TabsTrigger value="5on5">5 on 5</TabsTrigger>
