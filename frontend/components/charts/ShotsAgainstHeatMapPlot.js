@@ -93,13 +93,8 @@ export default function ShotsAgainstHeatMapPlot({id}) {
     // size of the defensive bins
     let binSize = 5 // translate to feet for binSize
 
-    let heatMapBins = createHeatMapBins(xDomain, yDomain, binSize)
-    // console.log("heatMapBins")
-    // console.log(heatMapBins)
     // create an array for the test data for all the heat map bins
-
-
-    // colors from https://colorbrewer2.org/#type=qualitative&scheme=Paired&n=5
+    let heatMapBins = createHeatMapBins(xDomain, yDomain, binSize)
 
     // group by games so that you can get the average.
     let shotsByGameAgainst = groupBy(data.shots_against, "game_id")
@@ -108,13 +103,10 @@ export default function ShotsAgainstHeatMapPlot({id}) {
     // remove and add.
     d3.select(ref.current).selectAll("*").remove();
 
-
     const shotHeatMapBins = assignShotToHeatMapBins(data.shots_against, heatMapBins, binSize)
 
+    // we might ues this in the future.
     const maxShotsAgainstPerGame = Math.max(...shotHeatMapBins.flat())
-
-    const colorScale = d3.scaleSequential(d3.interpolateInferno)
-    .domain([0, maxShotsAgainstPerGame]);
 
     // when createing the svg
     const svg = d3
@@ -125,9 +117,6 @@ export default function ShotsAgainstHeatMapPlot({id}) {
     .attr("transform",
       "translate(" + margin.left + "," + margin.top + ")");
 
-
-
-
     let testData = heatMapBins
 
     // get the height
@@ -136,34 +125,29 @@ export default function ShotsAgainstHeatMapPlot({id}) {
     const cellWidth = width/numCols;
     const cellHeight = height/numRows;
 
-
     svg.append('image')
       .attr('href', 'NHL_Hockey_Rink_half_formatted.png')
       .attr('width', width)
       .attr('height', height)
       .attr("class", "arena-image")
 
-
     svg.selectAll("g")
-    .data(testData)
-    .join("g")
-    .attr("transform", (d, i) => `translate(0, ${i * cellHeight})`)
-    .selectAll("rect")
-    .data(d => d)
-    .join("rect")
-    .attr("class", "cell")
-    .attr("x", (d, i) => i * cellWidth)
-    .attr("width", cellWidth)
-    .attr("height", cellHeight)
-    .attr("fill", d => {
-      const COLOR_AMPLIFIER = 5 // just to make this brighter
-      let shotsPerGame = d/gamesPlayerTogether*COLOR_AMPLIFIER
-
-      const color = `rgba(255, 0, 0, ${shotsPerGame})`
-      return color;
-    });
-
-
+      .data(testData)
+      .join("g")
+      .attr("transform", (d, i) => `translate(0, ${i * cellHeight})`)
+      .selectAll("rect")
+      .data(d => d)
+      .join("rect")
+      .attr("class", "cell")
+      .attr("x", (d, i) => i * cellWidth)
+      .attr("width", cellWidth)
+      .attr("height", cellHeight)
+      .attr("fill", d => {
+        const COLOR_AMPLIFIER = 5 // just to make this brighter
+        let shotsPerGame = d/gamesPlayerTogether*COLOR_AMPLIFIER
+        const color = `rgba(255, 0, 0, ${shotsPerGame})`
+        return color;
+      });
 
     // // add title
     svg.append("text")
