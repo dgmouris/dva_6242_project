@@ -126,7 +126,7 @@ export default function ShotsForScatterPlot({id}) {
       .domain(xDomain)
       .range([ 0, width ]);
 
-      svg.append("g")
+    svg.append("g")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(xScale));
 
@@ -142,8 +142,7 @@ export default function ShotsForScatterPlot({id}) {
       .attr('width', width)
       .attr('height', height)
       .attr("class", "arena-image")
-      // .attr("transform", `translate(0,-50%)`)
-      // transform: translateX(-50%);
+
     // Add dots
     svg.append('g')
       .selectAll("dot")
@@ -177,14 +176,13 @@ export default function ShotsForScatterPlot({id}) {
         .attr("cy",  -margin.top+50)
         .attr("r", 5)
         .attr("fill", d.color)
-        // .attr("class", "circle");
 
-      // Append labels
-      svg.append("text")
-        .attr("x", d.cx- legendOffset +5 )
-        .attr("y",  -margin.top+55)
-        .attr("class", "label")
-        .text(d.label);
+    // Append labels
+    svg.append("text")
+      .attr("x", d.cx- legendOffset +5 )
+      .attr("y",  -margin.top+55)
+      .attr("class", "label")
+      .text(d.label);
     });
   }
 
