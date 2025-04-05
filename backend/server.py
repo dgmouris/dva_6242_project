@@ -286,3 +286,8 @@ def get_similarity_poiu_stats_by_poiu():
         "base_poiu": base_poiu,
         "similar_poius": all_similarity_data
     })
+
+
+# this is going to interfact wsgi.
+if __name__ == "__main__":
+    app.run()
