@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@/styles/similarity_network_graph.css"
 
 import {
   QueryClientProvider,
