@@ -1,5 +1,7 @@
 # Team 117 DVA Project
 
+[Video accompanying the readme](https://youtu.be/CsI6Z2wVCJA)
+
 ## Demo
 
 If you want a working [version of the demo click here](https://dva-6242-project.vercel.app/)
