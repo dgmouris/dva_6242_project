@@ -6,6 +6,10 @@
 
 If you want a working [version of the demo click here](https://dva-6242-project.vercel.app/)
 
+Example: Search for "Mcdavid" and press enter, and click the search result.
+- select a different POIU from the drop down.
+- Click and drag the similarity.
+
 ## Data
 copy all of the [data found here](https://drive.google.com/drive/folders/1hpB9x9Pjlp3rQ6dhihEff1CPZxI6Slyc)
 in a folder with the same structure as defined in the folder. Should look like below.
