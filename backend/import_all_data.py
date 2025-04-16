@@ -4,8 +4,9 @@ from import_scripts.shots import import_all_shots
 from import_scripts.players import import_players_for_season
 from import_scripts.import_shifts import import_shifts_for_games
 from import_scripts.import_poiu import import_poiu_to_shot_mapping
+from import_scripts.import_similarity import import_similarity
 from app import app, db
-from models import Season, Game, Shot, Player, POIU, get_or_create
+from models import Season, Game, Shot, Player, POIU, get_or_create, POIUSimilarities
 
 
 def main():
@@ -18,6 +19,7 @@ def main():
         import_players_for_season("2023", db, Player)
         import_shifts_for_games(db, Game)
         import_poiu_to_shot_mapping(db, Shot, Player, POIU, get_or_create)
+        import_similarity(db, POIUSimilarities)
 
     print("Importing all data succesful!")
 

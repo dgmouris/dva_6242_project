@@ -10,7 +10,7 @@ def clean_data(df, situation):
     """
     Clean the dataset filtered to the situation that the closest similarity POIUs are being
     calculated for
-    
+
     Args:
         df (pd.DataFrame): raw shot data dataframe
         situation (string): situation on the ice to be used (5on5, 5on4, etc.)
@@ -18,7 +18,7 @@ def clean_data(df, situation):
         cleaned_df (pd.DataFrame): Final shot data dataframe to be used with clustering algorithm
     """
     df = df[df.situation == situation].copy()
-    
+
     offense_cols = [
         'shooting_poiu_id', 'xGoal', 'goal','shotDistance',
         'shotWasOnGoal'
@@ -34,7 +34,7 @@ def clean_data(df, situation):
     offensive_stats = (
         df_encoded[offense_cols + [col for col in df_encoded.columns if col.startswith('shotType_')]]
         .groupby(['shooting_poiu_id'])
-        .agg(['mean', 'sum']) 
+        .agg(['mean', 'sum'])
     )
 
     defensive_stats = (
@@ -58,7 +58,7 @@ def clean_data(df, situation):
     defensive_stats = defensive_stats.drop(columns=["shotDistance_sum"])
 
     merged_df = pd.merge(
-        offensive_stats, defensive_stats, 
+        offensive_stats, defensive_stats,
         on = "poiu_id",
         how="outer", suffixes=('_offense', '_defense'))
     merged_df.fillna(0, inplace=True)
@@ -74,9 +74,9 @@ def calculate_neighbors(cleaned_df):
     Create the dataframe for finding the 5 most similar POIUs for a given situation
 
     Args:
-        cleaned_df (pd.DataFrame): dataframe prepared for clustering 
+        cleaned_df (pd.DataFrame): dataframe prepared for clustering
     Returns:
-        neighbors_df (pd.DataFrame): dataframe where each row is a POIU and columns give the 5 most similar POIUs and similarity scores 
+        neighbors_df (pd.DataFrame): dataframe where each row is a POIU and columns give the 5 most similar POIUs and similarity scores
     """
 
     cols = list(cleaned_df.columns)
@@ -99,13 +99,13 @@ def calculate_neighbors(cleaned_df):
 
     for i in range(len(poiu_ids)):
         neighbors = []
-        for j in range(1,6): 
+        for j in range(1,6):
             neighbor_index = indices[i][j]
             neighbor_id = poiu_ids.iloc[neighbor_index]
             similarity = 1 - distances[i][j]
             similarity_pct = round(similarity * 100, 2)
             neighbors.append({'poiu_id': neighbor_id, 'similarity_pct': similarity_pct})
-        
+
         poiu_similarity_dict[poiu_ids.iloc[i]] = neighbors
 
     rows = []
@@ -146,13 +146,13 @@ def precision_at_k(knn_indices, cluster_labels, k=5):
     precision_scores = []
     for i, neighbors in enumerate(knn_indices):
         true_label = cluster_labels[i]
-        retrieved_labels = [cluster_labels[j] for j in neighbors[1:k+1]]  
+        retrieved_labels = [cluster_labels[j] for j in neighbors[1:k+1]]
         relevant_count = sum(1 for label in retrieved_labels if label == true_label)
         precision_scores.append(relevant_count / k)
     return sum(precision_scores) / len(precision_scores)
 
 def main():
-    shot_data = pd.read_csv("shot_data_with_poiu.csv")
+    shot_data = pd.read_csv("../data/similarity/shot_data_with_poiu.csv")
 
     print("Calculating Similarity for 5on5 situation POIUs")
     cleaned_data = clean_data(shot_data, "5on5")
@@ -166,9 +166,9 @@ def main():
     cleaned_data = clean_data(shot_data, "4on5")
     pk_df = calculate_neighbors(cleaned_data)
 
-    even_df.to_csv('similar_poius_5on5_2023.csv', index=False)
-    pp_df.to_csv('similar_poius_powerplay_2023.csv', index=False)
-    pk_df.to_csv('similar_poius_penalty_kill_2023.csv', index=False)
+    even_df.to_csv('../data/similarity/similar_poius_5on5_2023.csv', index=False)
+    pp_df.to_csv('../data/similarity/similar_poius_powerplay_2023.csv', index=False)
+    pk_df.to_csv('../data/similarity/similar_poius_penalty_kill_2023.csv', index=False)
 
 if __name__ ==  "__main__":
     main()

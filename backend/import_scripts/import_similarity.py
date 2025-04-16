@@ -15,7 +15,7 @@ def import_similarity(db, POIUSimilarities):
     file_path = Path(__file__)
     root = file_path.parent.parent.parent
 
-    similarity_file = Path(root / "data" / "similarity" / "similarity_2023.csv")
+    similarity_file = Path(root / "data" / "similarity" / "similarity_penalty_kill_2023.csv")
 
     # read all of the data and format it in the model format
     all_similarity_rows = []
