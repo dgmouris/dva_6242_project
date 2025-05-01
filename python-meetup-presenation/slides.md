@@ -146,8 +146,7 @@ PS. if you're a student use your sweet free digital ocean credits.
    1. Ingest all of the shots first.
    2. all of the player shifts reconcile shot and shift data to each POIU.
 5. Create a CSV for scikit learn to analyze data and cluster the POIUs for similarity.
-   1. Do the analysis with Precision@K, PCA, Silhouette scores, K Nearest Neighbours (KNN) and KMeans export to csv.
-   2. Load the csv data in a similarity table.
+   1. Do the analysis with Precision@K, PCA, Silhouette scores, K Nearest Neighbours (KNN) and KMeans export to csv and then load that csv data in a similarity table.
 6. Create the API to search and the frontend part to visualize the data side by side.
 7. iterate on the following for each chart
    1. mock up a visualization you'd like to see.
