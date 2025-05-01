@@ -173,4 +173,5 @@ PS. if you're a student use your sweet free digital ocean credits.
 - Will I build more of this?
   - I'm not sure but it would have been more fun if I wasn't trying to do so many things at once during the semester.
 - I learned a ton, which is great.
+- If you want to read the report if you're interested (or if you want to go to sleep) send me a message on the slack.
 - If you know someone at puckpedia let me know as I think some of this could be a cool visualization on their site.

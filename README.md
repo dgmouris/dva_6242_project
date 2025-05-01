@@ -1,6 +1,10 @@
-# Team 117 DVA Project
+# Hockey analytics
 
-[Video accompanying the readme](https://youtu.be/CsI6Z2wVCJA)
+This project analyzes the similarity and offensive/defensive performance of Player On Ice Units (POIU) which are all plyers on ice together at a given time.
+
+## Presentation slides
+
+You can access the [presentation here](https://hockey-analytics-presentation-meetup.vercel.app/)
 
 ## Demo
 
@@ -21,7 +25,11 @@ data/
     goalies/
     similarity/
 
+Note: Moneypuck data is used (thanks for making it public).
+
 ## Installation
+
+[Video accompanying the readme](https://youtu.be/CsI6Z2wVCJA)
 
 ### Prereqs
 - python and pip
