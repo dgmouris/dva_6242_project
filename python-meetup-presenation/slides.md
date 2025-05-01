@@ -140,7 +140,7 @@ PS. if you're a student use your sweet free digital ocean credits.
 # What was the process in building it?
 
 1. Come up with a static UI that looks janky (excalidraw for those who have seen my art).
-2. Find sources for all the data needed (moneypuck.com, unofficial NHL api)/
+2. Find sources for all the data needed (moneypuck.com, unofficial NHL api)
 3. Come up with a schema for the database and build the first pass of the SQLAlchemy models needed.
 4. Begin the process of ingesting data.
    1. Ingest all of the shots first.
