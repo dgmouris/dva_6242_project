@@ -23,7 +23,7 @@ Built with my project team at Georgia Tech.
 ### - What we tried to do
 ### - Why are you doing this?
 ### - How is it done and What are the limits?
-### - Whats our new Approach, and if successful what are the innovations?
+### - Whats our new Approach?
 ### - What's the stack?
 ### - Where and how was it Deployed?
 ### - What was the process in building it?
@@ -72,8 +72,9 @@ layout: intro
    1. Data ingestion
    2. Backend REST API
    3. Frontend App
-   4. D3.js
-   5. Deployment
+   4. Using AI (not llms) to get similarities between things
+   5. D3.js
+   6. Deployment
 3. My 12 year old self loves hockey stats, I understand the domain, and I didn't want to build a project on boring stats I didn't care about.
 
 ---
@@ -145,7 +146,7 @@ PS. if you're a student use your sweet free digital ocean credits.
    1. Ingest all of the shots first.
    2. all of the player shifts reconcile shot and shift data to each POIU.
 5. Create a CSV for scikit learn to analyze data and cluster the POIUs for similarity.
-   1. Do the analysis with Precidsion KNN and KMeans export to csv.
+   1. Do the analysis with Precision@K, PCA, Silhouette scores, K Nearest Neighbours (KNN) and KMeans export to csv.
    2. Load the csv data in a similarity table.
 6. Create the API to search and the frontend part to visualize the data side by side.
 7. iterate on the following for each chart
@@ -159,12 +160,13 @@ PS. if you're a student use your sweet free digital ocean credits.
 
 1. Fix and refactor general Jank in the codebase, we only had two months so is was rushed.
 2. Make it so that we could replace a player and find comparable lines on the fly.
-   1. This was one of the first original idea so that we could evaluate how a potential.
+   1. This was one of the first original idea so that we could evaluate how a potential line would work
+   2. Make the AI piece work on the fly.
 3. Injest and process since 2008 (so there's more POIUs) and you can compare it historically.
-4. Make the frontend more mobile friendly and a bit clearer.
+   1. we currently only have the data for the year 2023-24.
+4. Make the frontend more mobile friendly and a bit clearer, fix up general bugs that I didn't have time to fix.
 
 ---
-
 # Conclusions
 
 - I think this was pretty cool and passes the interesting test (for myself at least).
